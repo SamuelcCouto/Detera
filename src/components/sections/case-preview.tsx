@@ -115,7 +115,16 @@ export function PreviaCase({
               loading="lazy"
               tabIndex={-1}
               aria-hidden="true"
-              sandbox="allow-scripts"
+              /**
+               * `sandbox` vazio: nenhuma permissão. A prévia precisa só de
+               * HTML e CSS, e sem `allow-scripts` o JavaScript do site de
+               * terceiro simplesmente não roda dentro da nossa página — nem
+               * animação, nem analytics, nem cookie dele. Se aquele projeto
+               * for comprometido um dia, o código invasor não tem onde
+               * executar aqui. Também tira a página do alcance da LGPD por
+               * rastreamento de terceiro embutido.
+               */
+              sandbox=""
               referrerPolicy="no-referrer"
               onError={() => setFalhou(true)}
               className="pointer-events-none absolute top-0 left-0 h-[800px] w-[1280px] origin-top-left border-0"

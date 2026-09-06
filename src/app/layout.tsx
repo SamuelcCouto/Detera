@@ -87,12 +87,33 @@ export const viewport: Viewport = {
  * O slogan vem de `site.slogan`, não digitado aqui de novo — assim o recado
  * nunca fica dizendo uma frase que o resto do site já trocou.
  */
-const recadoConsole = `console.log(
-  "%c${site.name}%c  ${site.slogan}%c\\n\\nSe você chegou até aqui, provavelmente também constrói coisas.\\nQuando quiser construir junto: ${site.contact.email}",
-  "background:#ff3b3b;color:#07080b;font-weight:700;padding:2px 8px;letter-spacing:.18em",
-  "color:#9ba1ac;padding-left:8px",
-  "color:#6b717c"
-);`;
+const recadoConsole = ((): string => {
+  const texto =
+    `%c${site.name}%c  ${site.slogan}%c\n\n` +
+    "Se você chegou até aqui, provavelmente também constrói coisas.\n" +
+    `Quando quiser construir junto: ${site.contact.email}`;
+
+  const argumentos = [
+    texto,
+    "background:#ff3b3b;color:#07080b;font-weight:700;padding:2px 8px;letter-spacing:.18em",
+    "color:#9ba1ac;padding-left:8px",
+    "color:#6b717c",
+  ];
+
+  /**
+   * Os valores entram via `JSON.stringify`, não por interpolação direta na
+   * string do script.
+   *
+   * Interpolando, bastaria um dia alguém pôr uma aspa em `site.slogan` para
+   * quebrar o literal e fechar o script — e o que viesse depois seria
+   * executado. `JSON.stringify` produz o literal já escapado, e o `<` vira
+   * `<` para o texto nunca conseguir fechar a tag `</script>`.
+   */
+  return `console.log(${argumentos.map((a) => JSON.stringify(a)).join(",")});`.replace(
+    /</g,
+    "\\u003c",
+  );
+})();
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

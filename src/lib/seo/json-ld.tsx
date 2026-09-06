@@ -2,11 +2,25 @@ import { site } from "@/config/site";
 import { perguntas } from "@/content/perguntas";
 import { pilares } from "@/content/pilares";
 
+/**
+ * Serializa para dentro de um `<script>` sem deixar o conteúdo fechar a tag.
+ *
+ * `JSON.stringify` escapa aspas, mas não escapa `<`. Um texto contendo
+ * `</script>` encerraria o bloco no meio e o resto viraria HTML executável —
+ * o caminho clássico de XSS via dados estruturados. Hoje tudo aqui vem de
+ * arquivos estáticos do próprio repositório, então não há entrada hostil;
+ * escapar mesmo assim é o que impede isso de virar falha no dia em que o
+ * conteúdo passar a vir de um CMS ou de qualquer fonte externa.
+ */
+function serializar(dados: object): string {
+  return JSON.stringify(dados).replace(/</g, "\\u003c");
+}
+
 function Bloco({ dados }: { dados: object }) {
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(dados) }}
+      dangerouslySetInnerHTML={{ __html: serializar(dados) }}
     />
   );
 }

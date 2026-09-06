@@ -14,15 +14,26 @@ export const tiposDeProjeto = [
  * backend e sem guardar dado de ninguém — e o único custo é que a checagem
  * vale como ajuda de preenchimento, não como barreira de segurança.
  */
+/**
+ * Todo campo tem teto, não só piso.
+ *
+ * Sem limite superior, um texto colado de milhares de caracteres viraria uma
+ * URL de WhatsApp gigante que o próprio destino recusa — e, num sistema com
+ * servidor, seria o vetor óbvio de abuso. Validar tamanho é parte de validar
+ * entrada, mesmo quando o processamento é todo no cliente.
+ */
+const LIMITE = "Texto longo demais para este campo.";
+
 export const contatoSchema = z.object({
-  nome: z.string().trim().min(2, "Escreva seu nome."),
-  empresa: z.string().trim().optional(),
-  email: z.email("Confira o e-mail: parece incompleto."),
+  nome: z.string().trim().min(2, "Escreva seu nome.").max(120, LIMITE),
+  empresa: z.string().trim().max(120, LIMITE).optional(),
+  email: z.email("Confira o e-mail: parece incompleto.").max(180, LIMITE),
   tipo: z.enum(tiposDeProjeto),
   mensagem: z
     .string()
     .trim()
-    .min(10, "Conte um pouco mais — dez caracteres não dão para entender o projeto."),
+    .min(10, "Conte um pouco mais — dez caracteres não dão para entender o projeto.")
+    .max(2000, "Mensagem muito longa. Resuma o essencial — o resto a gente conversa."),
 });
 
 export type DadosContato = z.infer<typeof contatoSchema>;
