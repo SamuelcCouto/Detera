@@ -29,12 +29,12 @@ function resolveSiteUrl(): string {
 export const site = {
   name: "DETERA",
   legalName: "DETERA",
-  slogan: "Nada termina aqui.",
+  slogan: "Transformando ideias em personalidade",
   founder: "Samuel Couto",
   founderRole: "Fundador e responsável técnico",
   tagline: "Tecnologia, estratégia e crescimento digital",
   description:
-    "A DETERA constrói a estrutura digital de empresas que querem crescer: sites, sistemas, automações e a infraestrutura que mantém tudo isso no ar — e continua evoluindo depois do lançamento.",
+    "A DETERA transforma ideias em negócios com personalidade digital própria: sites, sistemas, automações e a infraestrutura que sustentam tudo isso no ar.",
   url: resolveSiteUrl(),
   locale: "pt-BR",
 

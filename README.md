@@ -1,10 +1,11 @@
 # DETERA
 
 Site institucional da DETERA — tecnologia, estratégia e crescimento digital.
-Slogan e critério de entrega da marca: **nada termina aqui**.
+Slogan da marca: **transformando ideias em personalidade**.
 
-Substitui o portfólio pessoal que existia antes neste repositório (preservado em
-`legacy/`).
+Este repositório é exclusivo da DETERA. O portfólio pessoal que existia antes
+neste código foi devolvido a uma pasta própria (`portfolio-fullstack/`, fora
+deste repositório) quando a marca foi desvinculada dele.
 
 ## Stack
 
@@ -47,10 +48,16 @@ O nome usa **A latino (U+0041)** do começo ao fim. Ele chegou escrito com um
 para busca, leitor de tela e copiar/colar. Se for reescrever a marca em algum
 lugar, confira o caractere.
 
-## Sistema de design
+## Identidade visual
 
-Tudo vive em `src/app/globals.css`, sob `@theme`. Os componentes leem os tokens;
-nenhum valor de cor é escrito solto no JSX.
+**A marca.** Um coração construído em blocos (grade, não curva), partido ao
+meio por uma linha de energia: dentro do coração ela vira núcleo, fora dele
+vira traço pontilhado — um pulso que continua além da própria forma. O
+wordmark fecha com um ponto quadrado em determinação, o "fim de frase" que a
+marca serve para contradizer. Vive em `src/components/brand/wordmark.tsx`; o
+mesmo desenho se repete, simplificado, no favicon (`src/app/icon.tsx`) e na
+imagem de compartilhamento (`src/app/opengraph-image.tsx`) — os três precisam
+ser atualizados juntos se a marca mudar.
 
 **Cor.** Preto com desvio de azul (`--color-vazio` `#07080b`, `--color-camada`
 `#0e1015`) e dois acentos com significado fixo:
@@ -72,9 +79,17 @@ pelo próprio domínio via `next/font`.
 sombra não existe.
 
 **A trilha.** O filete vertical que atravessa a página, marcado por losangos a
-cada seção e sumindo por fade no rodapé em vez de bater num terminal. É o slogan
-escrito na estrutura. Aparece a partir de 1280px; no mobile viraria sujeira ao
-lado do texto.
+cada seção e sumindo por fade no rodapé em vez de bater num terminal — a mesma
+personalidade atravessando presença, crescimento, tecnologia e infraestrutura
+como faces de uma coisa só. Aparece a partir de 1280px; no mobile viraria
+sujeira ao lado do texto.
+
+**O fundo vivo.** Hero, manifesto e a faixa final têm um céu de estrelas
+piscando (`src/components/sections/estrelas.tsx`, puro CSS, posições geradas
+por semente fixa — nunca `Math.random()` no cliente) sob uma luz vermelha
+ambiente à deriva (`.aura` em `globals.css`). Nada disso depende de mouse: é a
+razão de existir, depois de uma versão anterior responder só ao cursor e
+funcionar apenas no desktop.
 
 ## Movimento
 
@@ -82,8 +97,9 @@ lado do texto.
 - **Revelação por scroll**: `animation-timeline: view()` — sem JavaScript, sem
   `IntersectionObserver`, sem biblioteca. Fica dentro de um `@supports`, então
   navegador sem suporte mostra o conteúdo normalmente.
-- **Impressão**: há um `@media print` que zera as animações. Sem ele a timeline
-  nunca progride e a página sairia em branco no papel.
+- **Impressão**: há um `@media print` que zera as animações e esconde os
+  degradês e o céu de estrelas. Sem ele a timeline nunca progride e a página
+  sairia em branco no papel.
 - `prefers-reduced-motion` neutraliza tudo.
 
 ## Onde mexer no conteúdo
@@ -94,12 +110,31 @@ O texto do site não vive dentro dos componentes. Está em `src/content/`:
 | --- | --- |
 | `diagnostico.ts` | Os quatro sintomas de "onde o digital costuma travar" |
 | `pilares.ts` | Presença digital, Crescimento, Tecnologia, Infraestrutura |
-| `continuidade.ts` | O manifesto "nada termina aqui" |
+| `personalidade.ts` | O manifesto "transformando ideias em personalidade" |
 | `cases.ts` | Os estudos de caso (problema, estratégia, construção, resultado) |
+| `em-construcao.ts` | Projetos no ar sem case fechado ainda (domínio de preview) |
 | `processo.ts` | As cinco etapas, de descobrir a evoluir |
 | `perguntas.ts` | As perguntas frequentes |
 
-Marca, contatos e dados institucionais ficam em `src/config/site.ts`.
+Marca, contatos e dados institucionais ficam em `src/config/site.ts` —
+inclusive o slogan (`site.slogan`), lido de lá em todo lugar que ele aparece
+(hero, rodapé, metadados, recado do console) para nunca haver duas versões da
+mesma frase no site.
+
+## Cases: como funciona a prévia com moldura de navegador
+
+`src/components/sections/case-preview.tsx` hotlinka uma imagem que já vive no
+site do próprio cliente — não uma cópia salva neste repositório. Isso tem um
+efeito colateral bom (a prévia acompanha se o cliente trocar a imagem lá) e um
+risco conhecido (se o arquivo sumir, `onError` troca o quadro por um aviso em
+vez de deixar o ícone de imagem quebrada aparecer). Quando não existe imagem
+nenhuma (`imagemUrl` ausente, caso do Keep New em `em-construcao.ts`), o mesmo
+aviso aparece direto.
+
+Os dois cases com estudo completo (Sencis, FIDÈLE) apontam para o domínio
+oficial do cliente. Os projetos em `em-construcao.ts` apontam para o domínio de
+preview da Vercel — só migram para `cases.ts`, com domínio próprio, quando
+fecharem um ciclo real para virar case.
 
 ## Decisões que valem saber
 
@@ -110,9 +145,8 @@ Marca, contatos e dados institucionais ficam em `src/config/site.ts`.
   existindo como alias das seções renomeadas (`#solucoes`, `#processo`), e
   `next.config.ts` redireciona as rotas equivalentes. Nenhum link já
   compartilhado quebra.
-- **Referências discretas.** O losango com núcleo, os pontos de continuação da
-  trilha, o laço `05 → 01` no processo, o "Continua" do rodapé, o 404 que
-  convida a continuar e o recado no console são homenagens conceituais à ideia
-  de determinação e de retomada. Nenhum asset, nome, texto ou interface de
-  terceiros foi usado, e nada disso depende de reconhecimento para funcionar
-  como design.
+- **Referências discretas.** O coração em blocos, os pontos de continuação da
+  trilha, o laço `05 → 01` no processo e o recado no console são homenagens
+  conceituais à ideia de determinação e de retomada. Nenhum asset, nome, texto
+  ou interface de terceiros foi usado, e nada disso depende de reconhecimento
+  para funcionar como design.

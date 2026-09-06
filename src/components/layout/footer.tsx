@@ -37,7 +37,7 @@ export function Footer() {
               {site.slogan}
             </p>
             <p className="text-texto-suave mt-3 max-w-[34ch] text-[0.92rem] leading-relaxed">
-              {site.tagline} para empresas que querem continuar avançando.
+              {site.tagline} para negócios que querem ter cara própria.
             </p>
             <p className="text-texto-fraco mt-4 text-[0.88rem]">{site.local.note}</p>
           </div>
@@ -114,13 +114,9 @@ export function Footer() {
             </a>
           </p>
 
-          {/*
-            Onde outros sites escrevem "fim", este escreve o contrário. É a
-            última linha da página e a única em que o rodapé fala pela marca.
-          */}
           <p className="estado">
             <span aria-hidden="true" className="bg-determinacao h-[6px] w-[6px] rotate-45" />
-            Continua
+            {site.local.city} · {site.local.state}
           </p>
         </div>
       </Container>

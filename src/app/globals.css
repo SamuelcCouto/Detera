@@ -4,10 +4,10 @@
    DETERA — sistema de design
 
    Conceito: a trilha. Uma linha percorre a página inteira, marcada por
-   losangos a cada seção, e no rodapé ela não termina: some por fade.
-   É "nada termina aqui" escrito na estrutura, não na copy — quem
-   conhece jogos lê pontos de continuação, quem não conhece lê um
-   filete editorial.
+   losangos a cada seção — a mesma personalidade atravessando presença,
+   crescimento, tecnologia e infraestrutura como faces de uma coisa só,
+   em vez de seções empilhadas sem relação entre si. Quem conhece jogos
+   lê pontos de continuação; quem não conhece lê um filete editorial.
 
    Cor: dois acentos com significado fixo, nunca decorativos.
    Vermelho (determinação) = ação, estado ativo, o núcleo.
@@ -200,7 +200,8 @@
     }
 
     /* No fim da página a linha desaparece por fade em vez de bater
-       num terminal. Nada termina aqui, inclusive a trilha. */
+       num terminal — o mesmo cuidado do resto do sistema, até no detalhe
+       que quase ninguém vai notar conscientemente. */
     .trilha--fim {
       background: linear-gradient(
         to bottom,

@@ -83,9 +83,12 @@ export const viewport: Viewport = {
 /**
  * Recado para quem abre o console. Vai como script inline em vez de client
  * component: não custa hidratação nenhuma e roda uma vez só.
+ *
+ * O slogan vem de `site.slogan`, não digitado aqui de novo — assim o recado
+ * nunca fica dizendo uma frase que o resto do site já trocou.
  */
 const recadoConsole = `console.log(
-  "%cDETERA%c  nada termina aqui.%c\\n\\nSe você chegou até aqui, provavelmente também constrói coisas.\\nQuando quiser construir junto: ${site.contact.email}",
+  "%c${site.name}%c  ${site.slogan}%c\\n\\nSe você chegou até aqui, provavelmente também constrói coisas.\\nQuando quiser construir junto: ${site.contact.email}",
   "background:#ff3b3b;color:#07080b;font-weight:700;padding:2px 8px;letter-spacing:.18em",
   "color:#9ba1ac;padding-left:8px",
   "color:#6b717c"

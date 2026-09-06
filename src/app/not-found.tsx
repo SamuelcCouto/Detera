@@ -10,8 +10,7 @@ export const metadata: Metadata = {
 };
 
 /**
- * Tela vazia é convite para agir, não pedido de desculpas — e num site cuja
- * marca é "nada termina aqui", o 404 é o lugar mais óbvio para provar isso.
+ * Tela vazia é convite para agir, não pedido de desculpas.
  */
 export default function NaoEncontrada() {
   return (

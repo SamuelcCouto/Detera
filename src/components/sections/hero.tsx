@@ -124,9 +124,9 @@ export function Hero() {
           className="entrar text-lead text-texto-suave mt-8 max-w-[56ch]"
           style={{ animationDelay: "0.22s" }}
         >
-          Tecnologia, estratégia e sistemas digitais para empresas que querem
-          continuar avançando. Construímos o que coloca o negócio em movimento — e
-          seguimos junto no que vem depois do lançamento.
+          Toda ideia de negócio começa parecida com as outras. O nosso trabalho é
+          tecnologia, estratégia e design aplicados até ela virar algo que só a
+          sua empresa tem.
         </p>
 
         <div
