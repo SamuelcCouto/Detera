@@ -1,3 +1,4 @@
+import { Estrelas } from "@/components/sections/estrelas";
 import { Container } from "@/components/ui/container";
 import {
   IconeEmail,
@@ -47,7 +48,9 @@ export function Contato() {
       space="generous"
       aria-labelledby="contato-titulo"
     >
-      <Container>
+      <Estrelas quantidade={50} semente={9137} />
+
+      <Container className="relative">
         <div className="grid gap-14 md:grid-cols-2 md:gap-20">
           <div>
             <h2 id="contato-titulo" className="text-display">

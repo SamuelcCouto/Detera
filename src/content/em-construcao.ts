@@ -1,3 +1,5 @@
+import type { ImagemPrevia } from "@/content/cases";
+
 export type ProjetoEmConstrucao = {
   id: string;
   cliente: string;
@@ -5,8 +7,13 @@ export type ProjetoEmConstrucao = {
   resumo: string;
   url: string;
   urlRotulo: string;
-  imagemUrl?: string;
-  imagemAlt?: string;
+  imagens?: ImagemPrevia[];
+  /**
+   * Quando o projeto não tem imagem alguma para servir de prévia, a moldura
+   * carrega o próprio site num iframe reduzido. É a prévia mais honesta que
+   * existe — é literalmente o site, e se atualiza sozinha a cada deploy dele.
+   */
+  iframe?: boolean;
 };
 
 /**
@@ -24,8 +31,12 @@ export const projetosEmConstrucao: ProjetoEmConstrucao[] = [
       "Massagem relaxante, drenagem linfática, modeladora e protocolos personalizados, com atendimento individual e hora marcada.",
     url: "https://yasmin-g-studio.vercel.app",
     urlRotulo: "yasmin-g-studio.vercel.app",
-    imagemUrl: "https://yasmin-g-studio.vercel.app/opengraph-image",
-    imagemAlt: "Identidade visual do Yasmin Guimarães Studio, em dourado sobre preto",
+    imagens: [
+      {
+        url: "https://yasmin-g-studio.vercel.app/opengraph-image",
+        alt: "Identidade visual do Yasmin Guimarães Studio, em dourado sobre preto",
+      },
+    ],
   },
   {
     id: "keepnew",
@@ -35,5 +46,6 @@ export const projetosEmConstrucao: ProjetoEmConstrucao[] = [
       "Manutenção preventiva e corretiva, reparação e inspeção técnica de máquinas e equipamentos industriais.",
     url: "https://keepnew.vercel.app",
     urlRotulo: "keepnew.vercel.app",
+    iframe: true,
   },
 ];

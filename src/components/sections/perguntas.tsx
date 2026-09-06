@@ -1,3 +1,4 @@
+import { Estrelas } from "@/components/sections/estrelas";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { perguntas } from "@/content/perguntas";
@@ -10,7 +11,9 @@ import { perguntas } from "@/content/perguntas";
 export function Perguntas() {
   return (
     <Section id="perguntas" tone="vazio" aria-labelledby="perguntas-titulo">
-      <Container>
+      <Estrelas quantidade={30} semente={5150} className="opacity-60" />
+
+      <Container className="relative">
         <div className="grid gap-10 md:grid-cols-[minmax(0,20rem)_1fr] md:gap-16">
           <div className="md:sticky md:top-28 md:self-start">
             <h2 id="perguntas-titulo" className="text-display max-w-[12ch]">

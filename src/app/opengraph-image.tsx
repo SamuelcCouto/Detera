@@ -1,5 +1,11 @@
 import { ImageResponse } from "next/og";
 
+import {
+  MARCA_LINHA,
+  MARCA_METADE,
+  MARCA_NUCLEO,
+  MARCA_TRACOS,
+} from "@/components/brand/marca-paths";
 import { site } from "@/config/site";
 
 export const size = { width: 1200, height: 630 };
@@ -33,37 +39,31 @@ export default function OpenGraphImage() {
         }}
       >
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <svg width="40" height="40" viewBox="0 0 16 16" fill="none">
+          <svg width="36" height="45" viewBox="0 0 32 40" fill="none">
             <g fill="#f2f3f5">
-              <rect x="3" y="3" width="2" height="2" />
-              <rect x="5" y="3" width="2" height="2" />
-              <rect x="9" y="3" width="2" height="2" />
-              <rect x="11" y="3" width="2" height="2" />
-              <rect x="1" y="5" width="2" height="2" />
-              <rect x="3" y="5" width="2" height="2" />
-              <rect x="5" y="5" width="2" height="2" />
-              <rect x="7" y="5" width="2" height="2" />
-              <rect x="9" y="5" width="2" height="2" />
-              <rect x="11" y="5" width="2" height="2" />
-              <rect x="13" y="5" width="2" height="2" />
-              <rect x="1" y="7" width="2" height="2" />
-              <rect x="3" y="7" width="2" height="2" />
-              <rect x="5" y="7" width="2" height="2" />
-              <rect x="7" y="7" width="2" height="2" />
-              <rect x="9" y="7" width="2" height="2" />
-              <rect x="11" y="7" width="2" height="2" />
-              <rect x="13" y="7" width="2" height="2" />
-              <rect x="3" y="9" width="2" height="2" />
-              <rect x="5" y="9" width="2" height="2" />
-              <rect x="7" y="9" width="2" height="2" />
-              <rect x="9" y="9" width="2" height="2" />
-              <rect x="11" y="9" width="2" height="2" />
-              <rect x="5" y="11" width="2" height="2" />
-              <rect x="7" y="11" width="2" height="2" />
-              <rect x="9" y="11" width="2" height="2" />
-              <rect x="7" y="13" width="2" height="2" />
+              <path d={MARCA_METADE} />
+              <g transform="translate(32 0) scale(-1 1)">
+                <path d={MARCA_METADE} />
+              </g>
             </g>
-            <path d="M8 6l2 2-2 2-2-2z" fill="#ff3b3b" />
+            {MARCA_TRACOS.map((traco) => (
+              <rect
+                key={traco.y}
+                x={MARCA_LINHA.x}
+                y={traco.y}
+                width={MARCA_LINHA.largura}
+                height={traco.altura}
+                fill="#ff3b3b"
+              />
+            ))}
+            <rect
+              x={MARCA_LINHA.x}
+              y="6.6"
+              width={MARCA_LINHA.largura}
+              height="26.6"
+              fill="#ff3b3b"
+            />
+            <path d={MARCA_NUCLEO} fill="#ff3b3b" />
           </svg>
 
           <div

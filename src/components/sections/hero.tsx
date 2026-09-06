@@ -1,5 +1,6 @@
 import { Simbolo } from "@/components/brand/wordmark";
 import { Estrelas } from "@/components/sections/estrelas";
+import { Nave } from "@/components/sections/nave";
 import { ButtonLink } from "@/components/ui/button";
 import { BotaoNucleo } from "@/components/ui/botao-nucleo";
 import { Container } from "@/components/ui/container";
@@ -102,8 +103,22 @@ export function Hero() {
         }
       />
 
+      {/*
+        A margem que sobra ao lado do conteúdo recebe o joguinho. O painel é
+        ancorado ao container (`right-full`), não à janela: assim ele nunca
+        invade o texto, só existe quando a margem comporta os 200px, e some
+        por completo abaixo de 1620px — onde não há espaço nem teclado.
+      */}
+      <div className="pointer-events-none absolute inset-0 hidden justify-center [@media(min-width:1620px)]:flex">
+        <div className="relative w-full max-w-[76rem]">
+          <div className="pointer-events-auto absolute top-[12.5rem] right-full">
+            <Nave />
+          </div>
+        </div>
+      </div>
+
       <Container className="relative pt-20 pb-20 md:pt-28 md:pb-28">
-        <Simbolo className="entrar text-borda-viva h-12 w-10" vivo />
+        <Simbolo className="entrar text-borda-viva h-14 w-11" />
 
         <h1 id="hero-titulo" className="mt-8">
           <span

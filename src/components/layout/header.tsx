@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { Wordmark } from "@/components/brand/wordmark";
+import { Simbolo } from "@/components/brand/wordmark";
 import { ButtonLink } from "@/components/ui/button";
 import { navLinks } from "@/config/nav";
 import { cn } from "@/lib/utils/cn";
@@ -38,17 +38,15 @@ export function Header() {
   return (
     <header className="border-borda bg-vazio/85 sticky top-0 z-50 border-b backdrop-blur-md">
       <div className="mx-auto flex h-[4.5rem] w-full max-w-[76rem] items-center justify-between gap-6 px-6 md:px-10">
-        {/* O contorno do símbolo acende no hover da marca: o menor estado
-            interativo do site, e o primeiro sinal de que a página responde. */}
+        {/* Só o símbolo no cabeçalho: o nome aparece inteiro logo abaixo, no
+            hero, e em tamanho que nenhuma marca de menu alcança. A marca não
+            fica parada — e no hover ela acelera. */}
         <a
           href="#topo"
           className="group text-texto shrink-0"
           aria-label="DETERA, ir para o início do site"
         >
-          <Wordmark
-            tamanho="sm"
-            className="[&_svg]:transition-colors [&_svg]:group-hover:text-determinacao"
-          />
+          <Simbolo className="h-10 w-8" />
         </a>
 
         <nav aria-label="Navegação principal" className="hidden lg:block">

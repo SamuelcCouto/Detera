@@ -1,3 +1,4 @@
+import { Estrelas } from "@/components/sections/estrelas";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { etapas } from "@/content/processo";
@@ -10,7 +11,9 @@ export function Processo() {
       tone="camada"
       aria-labelledby="processo-titulo"
     >
-      <Container>
+      <Estrelas quantidade={32} semente={4242} className="opacity-60" />
+
+      <Container className="relative">
         <div className="grid gap-10 md:grid-cols-[minmax(0,22rem)_1fr] md:gap-16">
           <div className="md:sticky md:top-28 md:self-start">
             <h2 id="processo-titulo" className="text-display max-w-[12ch]">

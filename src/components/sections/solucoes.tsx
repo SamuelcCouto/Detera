@@ -10,7 +10,7 @@ export function Solucoes() {
     <Section
       id="solucoes"
       alias="servicos"
-      tone="vazio"
+      tone="camada"
       aria-labelledby="solucoes-titulo"
     >
       <Container>

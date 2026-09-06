@@ -2,34 +2,42 @@
 
 import { useState } from "react";
 
+import type { ImagemPrevia } from "@/content/cases";
+import { cn } from "@/lib/utils/cn";
+
+/** Frases que se revezam na obra. Piada discreta: nunca termina. */
+const recadosDeObra = ["levantando as paredes", "conferindo o prumo", "quase lá"];
+
 /**
- * A moldura de navegador em volta da imagem do projeto: pontos, barra de
- * endereço com o domínio real, e a prévia dentro.
+ * A moldura de navegador em volta da prévia do projeto: pontos, barra de
+ * endereço com o domínio real, e o conteúdo dentro.
  *
- * A imagem é hotlink para um arquivo que já vive no site do próprio projeto
- * — não uma cópia salva aqui (ver `imagemUrl` em `content/cases.ts` e
- * `content/em-construcao.ts`). Isso tem um efeito colateral bom: a prévia
- * acompanha se o arquivo for trocado lá. E um risco conhecido: se o arquivo
- * sumir, `onError` troca o quadro por um aviso em vez de deixar o ícone de
- * imagem quebrada aparecer. Quando não existe imagem nenhuma para mostrar
- * (`imagemUrl` ausente), o mesmo aviso aparece direto, sem tentar carregar
- * nada.
+ * Três modos, nessa ordem de preferência:
+ *
+ * 1. `imagens` — uma ou mais fotos servidas do nosso próprio `public/`. Mais
+ *    de uma vira um slideshow em fade, feito só com `animation-delay`
+ *    escalonado: sem estado, sem timer, sem re-render.
+ * 2. `iframe` — o site de verdade, reduzido e sem interação. Serve para
+ *    projeto que não tem imagem nenhuma para emprestar: é a prévia mais
+ *    honesta possível, porque é literalmente o site.
+ * 3. Nenhum dos dois — um aviso, que também cobre o caso de a imagem falhar.
  */
 export function PreviaCase({
   href,
   dominio,
-  imagemUrl,
-  imagemAlt,
+  imagens,
+  iframe = false,
   emConstrucao = false,
 }: {
   href: string;
   dominio: string;
-  imagemUrl?: string;
-  imagemAlt?: string;
-  /** Marca o projeto como ainda em obra — a barra de endereço ganha um selo. */
+  imagens?: ImagemPrevia[];
+  iframe?: boolean;
+  /** Marca o projeto como ainda em obra: selo, barra e recados. */
   emConstrucao?: boolean;
 }) {
-  const [falhou, setFalhou] = useState(!imagemUrl);
+  const [falhou, setFalhou] = useState(false);
+  const temImagens = Boolean(imagens?.length) && !falhou;
 
   return (
     <a
@@ -37,38 +45,118 @@ export function PreviaCase({
       target="_blank"
       rel="noopener noreferrer"
       aria-label={`Abrir ${dominio} em uma nova aba`}
-      className="bloco bloco--vivo group block overflow-hidden"
+      className="bloco bloco--vivo group relative block overflow-hidden"
     >
-      <div className="border-borda bg-camada-alta flex items-center gap-1.5 border-b px-3.5 py-2.5">
+      <div className="border-borda bg-camada-alta relative flex items-center gap-1.5 border-b px-3.5 py-2.5">
         <span aria-hidden="true" className="border-contorno h-2 w-2 rounded-full border" />
         <span aria-hidden="true" className="border-contorno h-2 w-2 rounded-full border" />
         <span aria-hidden="true" className="border-contorno h-2 w-2 rounded-full border" />
         <span className="text-texto-fraco font-mono ml-2 truncate text-[0.8rem]">
           {dominio}
         </span>
+
         {emConstrucao ? (
           <span className="estado text-sistema-viva ml-auto shrink-0 pl-2">
-            <span aria-hidden="true" className="bg-sistema h-[5px] w-[5px] rotate-45" />
+            <span
+              aria-hidden="true"
+              className="bg-sistema obra-pulso h-[5px] w-[5px] rotate-45"
+            />
             Em obra
+          </span>
+        ) : null}
+
+        {/* A barra que enche e recomeça: o projeto avança, mas obra é obra. */}
+        {emConstrucao ? (
+          <span
+            aria-hidden="true"
+            className="bg-borda absolute inset-x-0 -bottom-px h-[2px] overflow-hidden"
+          >
+            <span className="bg-sistema obra-barra block h-full w-full origin-left shadow-[0_0_6px_var(--color-sistema)]" />
           </span>
         ) : null}
       </div>
 
       <div className="bg-camada-alta relative aspect-[16/9] overflow-hidden">
-        {falhou || !imagemUrl ? (
+        {temImagens ? (
+          imagens!.map((imagem, indice) => (
+            // eslint-disable-next-line @next/next/no-img-element -- o slideshow empilha as fotos e cruza opacidade; `next/image` com `fill` aqui só acrescentaria camadas sem ganho
+            <img
+              key={imagem.url}
+              src={imagem.url}
+              alt={imagem.alt}
+              loading="lazy"
+              onError={() => setFalhou(true)}
+              style={{
+                objectPosition: imagem.pos ?? "50% 50%",
+                animationDelay: `${indice * 4}s`,
+                animationDuration: `${imagens!.length * 4}s`,
+              }}
+              className={cn(
+                "absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]",
+                // A primeira foto é a camada de baixo e nunca some.
+                indice > 0 && "previa-slide",
+              )}
+            />
+          ))
+        ) : iframe && !falhou ? (
+          <>
+            {/*
+              1280px renderizados e reduzidos à metade: o site aparece com o
+              layout de desktop, não com o mobile espremido. A escala é fixa e
+              generosa de propósito — 640px cobrem o card mais largo possível
+              (o container trava em 1216px, então cada coluna dá ~596px), e o
+              que sobra é cortado pelo `overflow`. Sobrar é melhor que faltar:
+              faltando, apareceria faixa vazia na moldura.
+              `pointer-events` desligado para o clique pertencer ao link.
+            */}
+            <iframe
+              src={href}
+              title={`Prévia do site ${dominio}`}
+              loading="lazy"
+              tabIndex={-1}
+              aria-hidden="true"
+              sandbox="allow-scripts"
+              referrerPolicy="no-referrer"
+              onError={() => setFalhou(true)}
+              className="pointer-events-none absolute top-0 left-0 h-[800px] w-[1280px] origin-top-left border-0"
+              style={{ transform: "scale(0.5)" }}
+            />
+            <span className="from-vazio/40 pointer-events-none absolute inset-0 bg-gradient-to-t to-transparent" />
+          </>
+        ) : (
           <span className="text-texto-fraco absolute inset-0 flex items-center justify-center p-6 text-center text-[0.85rem]">
             Pré-visualização indisponível — clique para ver o site ao vivo
           </span>
-        ) : (
-          // eslint-disable-next-line @next/next/no-img-element -- hotlink externo, fora do domínio configurado para next/image
-          <img
-            src={imagemUrl}
-            alt={imagemAlt}
-            loading="lazy"
-            onError={() => setFalhou(true)}
-            className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
-          />
         )}
+
+        {/* Os recados só aparecem na obra, e um de cada vez. */}
+        {emConstrucao ? (
+          <span className="pointer-events-none absolute right-3 bottom-3 left-3 flex justify-end">
+            <span className="bg-vazio/80 border-borda relative h-[1.4rem] overflow-hidden rounded-[2px] border px-2 backdrop-blur-sm">
+              <span className="sr-only">Projeto em construção</span>
+              {recadosDeObra.map((recado, indice) => (
+                <span
+                  key={recado}
+                  aria-hidden="true"
+                  style={{
+                    animationDelay: `${indice * 4}s`,
+                    animationDuration: `${recadosDeObra.length * 4}s`,
+                  }}
+                  className={cn(
+                    "estado text-texto-fraco absolute inset-0 flex items-center justify-center whitespace-nowrap",
+                    indice > 0 && "obra-recado",
+                  )}
+                >
+                  {recado}
+                </span>
+              ))}
+              {/* Fantasma invisível: dá largura ao balão sem depender de JS. */}
+              <span aria-hidden="true" className="estado invisible">
+                {recadosDeObra[0]}
+              </span>
+            </span>
+          </span>
+        ) : null}
       </div>
     </a>
   );

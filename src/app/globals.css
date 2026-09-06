@@ -412,6 +412,236 @@
   animation-delay: var(--estrela-atraso, 0s);
 }
 
+/* No celular a tela é menor e o aparelho quase sempre é mais fraco: metade
+   das estrelas some. A densidade continua parecida na área visível, e o
+   número de elementos animados cai pela metade. */
+@media (max-width: 640px) {
+  .estrela:nth-child(2n) {
+    display: none;
+  }
+}
+
+/* A camada inteira sobe devagar. Uma transformação só, no contêiner, em vez
+   de mexer em cada ponto: o compositor resolve sem tocar em layout. */
+@keyframes ceu-deriva {
+  from {
+    transform: translate3d(0, 3%, 0);
+  }
+  to {
+    transform: translate3d(0, -3%, 0);
+  }
+}
+
+.ceu-deriva {
+  animation: ceu-deriva 90s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+/* Cadente: aparece, atravessa e some. O ciclo é longo de propósito — se
+   passasse toda hora viraria protetor de tela. */
+@keyframes cadente-passa {
+  0%,
+  94% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) rotate(28deg) scaleX(0);
+  }
+  95.5% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(28deg) scaleX(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(120px, 64px, 0) rotate(28deg) scaleX(1);
+  }
+}
+
+.cadente {
+  height: 1px;
+  transform-origin: left center;
+  background: linear-gradient(to right, transparent, var(--color-texto));
+  animation: cadente-passa var(--cadente-duracao, 22s) linear infinite;
+  animation-delay: var(--cadente-atraso, 0s);
+  opacity: 0;
+}
+
+/* ------------------------------------------------------------------
+   A marca em movimento. As duas metades respiram, o núcleo pulsa e os
+   traços piscam em sequência, como carga subindo pela linha.
+   ------------------------------------------------------------------ */
+@keyframes marca-respira-esq {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-0.45px);
+  }
+}
+
+@keyframes marca-respira-dir {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(0.45px);
+  }
+}
+
+@keyframes marca-nucleo-pulsa {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.72;
+    transform: scale(0.88);
+  }
+}
+
+@keyframes marca-traco-pisca {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.marca-energia {
+  filter: drop-shadow(0 0 2px color-mix(in srgb, var(--color-determinacao) 70%, transparent));
+}
+
+.marca-viva .marca-placa--esq {
+  animation: marca-respira-esq 4.5s ease-in-out infinite;
+}
+
+.marca-viva .marca-placa--dir {
+  animation: marca-respira-dir 4.5s ease-in-out infinite;
+}
+
+.marca-viva .marca-nucleo {
+  transform-origin: 16px 20px;
+  animation: marca-nucleo-pulsa 2.8s ease-in-out infinite;
+}
+
+.marca-viva .marca-traco {
+  animation: marca-traco-pisca 2.8s ease-in-out infinite;
+}
+
+/* Os quatro traços piscam em ordem, de fora para dentro: a energia parece
+   percorrer a linha em vez de acender tudo de uma vez. */
+.marca-viva .marca-traco:nth-of-type(1) {
+  animation-delay: 0s;
+}
+.marca-viva .marca-traco:nth-of-type(2) {
+  animation-delay: 0.35s;
+}
+.marca-viva .marca-traco:nth-of-type(4) {
+  animation-delay: 0.35s;
+}
+.marca-viva .marca-traco:nth-of-type(5) {
+  animation-delay: 0s;
+}
+
+/* No hover da marca no cabeçalho, tudo acelera e acende. */
+.group:hover .marca-viva .marca-nucleo {
+  animation-duration: 0.9s;
+}
+
+.group:hover .marca-energia {
+  filter: drop-shadow(0 0 5px var(--color-determinacao));
+}
+
+/* ------------------------------------------------------------------
+   Prévia dos projetos
+   ------------------------------------------------------------------ */
+
+/* Slideshow em fade. Cada foto recebe o mesmo ciclo com atraso escalonado,
+   então a troca acontece sem estado, sem timer e sem re-render. */
+@keyframes previa-troca {
+  0%,
+  3% {
+    opacity: 0;
+  }
+  7%,
+  22% {
+    opacity: 1;
+  }
+  26%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Só as fotos a partir da segunda animam: a primeira fica por baixo, sempre
+   visível. Assim, se a animação não rodar — movimento reduzido, impressão,
+   navegador antigo — a prévia mostra uma foto em vez de um quadro vazio. */
+.previa-slide {
+  opacity: 0;
+  animation: previa-troca var(--previa-duracao, 16s) ease-in-out infinite;
+}
+
+/* A barra da obra enche e recomeça. É a piada: obra nunca termina. */
+@keyframes obra-barra {
+  0% {
+    transform: scaleX(0.04);
+  }
+  70% {
+    transform: scaleX(0.86);
+  }
+  86% {
+    transform: scaleX(0.92);
+  }
+  100% {
+    transform: scaleX(0.04);
+  }
+}
+
+.obra-barra {
+  /* Estado base parado em 70%: se a animação não rodar (movimento reduzido),
+     a barra ainda lê como obra em andamento, não como obra concluída. */
+  transform: scaleX(0.7);
+  animation: obra-barra 9s ease-in-out infinite;
+}
+
+@keyframes obra-pulso {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.obra-pulso {
+  animation: obra-pulso 1.8s ease-in-out infinite;
+}
+
+/* Os recados se revezam no mesmo lugar. */
+@keyframes obra-recado {
+  0%,
+  4% {
+    opacity: 0;
+  }
+  9%,
+  28% {
+    opacity: 1;
+  }
+  33%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.obra-recado {
+  opacity: 0;
+  animation: obra-recado 12s ease-in-out infinite;
+}
+
 @keyframes aura-deriva {
   0% {
     transform: translate(-6%, -4%) scale(1);
@@ -506,7 +736,19 @@
   /* Degradê e céu decorativos não têm função no papel — somem junto com o
      resto dos enfeites que a impressão já limpa. */
   .aura,
-  .estrela {
+  .estrela,
+  .cadente {
+    display: none !important;
+  }
+
+  /* No slideshow impresso sobra a primeira foto: as outras estão em
+     opacidade zero esperando a vez que nunca chega no papel. */
+  .previa-slide {
+    opacity: 1 !important;
+    animation: none !important;
+  }
+
+  .previa-slide ~ .previa-slide {
     display: none !important;
   }
 }

@@ -1,3 +1,10 @@
+export type ImagemPrevia = {
+  url: string;
+  alt: string;
+  /** `object-position` do recorte. Cada foto tem um ponto de interesse. */
+  pos?: string;
+};
+
 export type Case = {
   id: string;
   cliente: string;
@@ -11,18 +18,20 @@ export type Case = {
   url: string;
   urlRotulo: string;
   /**
-   * Hotlink para uma imagem que já vive no próprio site do cliente — não uma
-   * cópia salva aqui. Se o cliente trocar aquele arquivo, a prévia acompanha;
-   * se o arquivo sumir, o componente cai para um aviso em vez de exibir um
-   * ícone de imagem quebrada (ver `PreviaCase`).
+   * Servidas do nosso próprio `public/`, não hotlinkadas do site do cliente.
+   *
+   * O Sencis é Next.js e o caminho do arquivo carrega o hash do build — muda
+   * a cada deploy dele e quebraria a prévia aqui sem ninguém perceber. Cópia
+   * local resolve isso e ainda entra otimizada.
+   *
+   * Mais de uma imagem vira um slideshow discreto (ver `PreviaCase`).
    */
-  imagemUrl: string;
-  imagemAlt: string;
+  imagens: ImagemPrevia[];
 };
 
 /**
- * Estudo de caso, não vitrine: problema → estratégia → solução → resultado, e
- * a stack só no fim.
+ * Estudo de caso, não vitrine: problema → estratégia → construção → resultado,
+ * e a stack só no fim.
  *
  * O bloco `impacto` é qualitativo de propósito. Nenhum dos dois projetos tem
  * série histórica de tráfego ou de vendas para comparar, e número inventado em
@@ -59,8 +68,13 @@ export const cases: Case[] = [
     ],
     url: "https://www.sencis.com.br",
     urlRotulo: "sencis.com.br",
-    imagemUrl: "https://www.sencis.com.br/og.jpg",
-    imagemAlt: "Fachada da Sencis Odontologia Integrada, com o letreiro sobre a entrada",
+    imagens: [
+      {
+        url: "/cases/sencis.jpg",
+        alt: "Recepção da Sencis Odontologia, com poltrona, mesas de centro e a parede iluminada em formato de dente",
+        pos: "50% 38%",
+      },
+    ],
   },
   {
     id: "fidele",
@@ -85,7 +99,27 @@ export const cases: Case[] = [
     tecnologias: ["Next.js", "React", "TypeScript", "InfinitePay", "Vitest", "Vercel"],
     url: "https://www.fideleoficial.com.br",
     urlRotulo: "fideleoficial.com.br",
-    imagemUrl: "https://www.fideleoficial.com.br/img/capa.jpg",
-    imagemAlt: "Modelos vestindo peças da coleção FIDÈLE em ação de campanha da marca",
+    imagens: [
+      {
+        url: "/cases/fidele-1.jpg",
+        alt: "Campanha da FIDÈLE com modelos vestindo peças da coleção",
+        pos: "50% 30%",
+      },
+      {
+        url: "/cases/fidele-2.jpg",
+        alt: "Regata da coleção FIDÈLE",
+        pos: "50% 25%",
+      },
+      {
+        url: "/cases/fidele-3.jpg",
+        alt: "Polo bordada da coleção FIDÈLE",
+        pos: "50% 25%",
+      },
+      {
+        url: "/cases/fidele-4.jpg",
+        alt: "Camisa com bolso cargo da coleção FIDÈLE",
+        pos: "50% 25%",
+      },
+    ],
   },
 ];

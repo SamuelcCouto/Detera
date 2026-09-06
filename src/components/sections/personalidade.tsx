@@ -1,3 +1,4 @@
+import { Estrelas } from "@/components/sections/estrelas";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { transformacoes } from "@/content/personalidade";
@@ -11,7 +12,7 @@ export function Personalidade() {
   return (
     <Section
       id="personalidade"
-      tone="camada"
+      tone="vazio"
       space="generous"
       aria-labelledby="personalidade-titulo"
       className="overflow-hidden"
@@ -32,6 +33,8 @@ export function Personalidade() {
           } as React.CSSProperties
         }
       />
+
+      <Estrelas quantidade={45} semente={771} className="opacity-80" />
 
       <Container className="relative">
         <div className="max-w-[60ch]">

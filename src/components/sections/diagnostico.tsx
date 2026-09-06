@@ -4,7 +4,7 @@ import { sintomas } from "@/content/diagnostico";
 
 export function Diagnostico() {
   return (
-    <Section id="diagnostico" tone="camada" aria-labelledby="diagnostico-titulo">
+    <Section id="diagnostico" tone="vazio" aria-labelledby="diagnostico-titulo">
       <Container>
         <h2 id="diagnostico-titulo" className="text-display max-w-[16ch]">
           Onde o digital costuma travar
