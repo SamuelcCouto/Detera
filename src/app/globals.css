@@ -1,0 +1,526 @@
+@import "tailwindcss";
+
+/* ==================================================================
+   DETERA — sistema de design
+
+   Conceito: a trilha. Uma linha percorre a página inteira, marcada por
+   losangos a cada seção, e no rodapé ela não termina: some por fade.
+   É "nada termina aqui" escrito na estrutura, não na copy — quem
+   conhece jogos lê pontos de continuação, quem não conhece lê um
+   filete editorial.
+
+   Cor: dois acentos com significado fixo, nunca decorativos.
+   Vermelho (determinação) = ação, estado ativo, o núcleo.
+   Azul (sistema) = infraestrutura, dado, o que sustenta.
+
+   Tipografia: uma superfamília só. Chivo no display e no texto,
+   Chivo Mono reservado a microcopy de estado — a textura de interface
+   sem virar fantasia de terminal.
+   ================================================================== */
+@theme {
+  /* Superfícies — preto com desvio de azul, nunca preto neutro */
+  --color-vazio: #07080b;
+  --color-camada: #0e1015;
+  --color-camada-alta: #161920;
+  --color-borda: #23262e;
+  --color-borda-viva: #363b45;
+  /* Limite de componente interativo. Mais claro que as bordas decorativas
+     de propósito: campo e botão precisam de 3:1 contra o fundo (WCAG
+     1.4.11), e o filete que separa um bloco do outro não. */
+  --color-contorno: #5c626d;
+
+  /* Texto */
+  --color-texto: #f2f3f5;
+  --color-texto-suave: #9ba1ac;
+  --color-texto-fraco: #767c88;
+
+  /* Determinação — ação, estado ativo, núcleo */
+  --color-determinacao: #ff3b3b;
+  --color-determinacao-viva: #ff6b6b;
+  --color-determinacao-funda: #3d0f14;
+
+  /* Sistema — infraestrutura, continuidade, dado */
+  --color-sistema: #4c7dff;
+  --color-sistema-viva: #7ca0ff;
+  --color-sistema-funda: #10203f;
+
+  /* Tipografia */
+  --font-display: var(--font-chivo), "Chivo", system-ui, -apple-system, sans-serif;
+  --font-sans: var(--font-chivo), "Chivo", system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-chivo-mono), "Chivo Mono", ui-monospace, monospace;
+
+  /* Escala — salto largo no display, razão ~1.25 no corpo */
+  --text-marca: clamp(3.25rem, 1rem + 9vw, 8rem);
+  --text-marca--line-height: 0.86;
+  --text-marca--letter-spacing: -0.045em;
+
+  --text-display: clamp(2.1rem, 1.2rem + 3.6vw, 3.75rem);
+  --text-display--line-height: 1;
+  --text-display--letter-spacing: -0.03em;
+
+  --text-title: clamp(1.5rem, 1.15rem + 1.4vw, 2.25rem);
+  --text-title--line-height: 1.1;
+  --text-title--letter-spacing: -0.02em;
+
+  --text-heading: clamp(1.1rem, 1rem + 0.45vw, 1.35rem);
+  --text-heading--line-height: 1.25;
+  --text-heading--letter-spacing: -0.01em;
+
+  --text-lead: clamp(1.05rem, 1rem + 0.4vw, 1.25rem);
+  --text-lead--line-height: 1.65;
+
+  --text-micro: 0.78rem;
+  --text-micro--line-height: 1.5;
+  --text-micro--letter-spacing: 0.08em;
+
+  /* Forma — raio curto: interface técnica, não cartão de SaaS */
+  --radius-min: 2px;
+  --radius-bloco: 4px;
+
+  --ease-decidido: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@layer base {
+  :root {
+    color-scheme: dark;
+    scroll-behavior: smooth;
+    /* Altura exata do cabeçalho fixo. */
+    scroll-padding-top: 4.5rem;
+  }
+
+  body {
+    background-color: var(--color-vazio);
+    color: var(--color-texto);
+    font-family: var(--font-sans);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Grão. Sobre preto chapado a tela fica morta; o ruído devolve
+     matéria sem virar textura visível. */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='r'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23r)'/%3E%3C/svg%3E");
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-determinacao);
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
+
+  ::selection {
+    background: var(--color-determinacao);
+    color: var(--color-vazio);
+  }
+}
+
+@layer components {
+  /* ----------------------------------------------------------------
+     Pular para o conteúdo.
+
+     Classe própria, e não `sr-only focus:not-sr-only`: as duas
+     utilities caem na mesma especificidade e a ordem de emissão
+     decide quem vence — frágil demais para o único atalho de teclado
+     da página.
+     ---------------------------------------------------------------- */
+  .pular-conteudo {
+    position: absolute;
+    top: 0;
+    left: -9999px;
+    z-index: 100;
+    padding: 0.75rem 1.25rem;
+    background: var(--color-determinacao);
+    color: var(--color-vazio);
+    font-weight: 600;
+  }
+
+  .pular-conteudo:focus {
+    top: 0.75rem;
+    left: 0.75rem;
+  }
+
+  /* ----------------------------------------------------------------
+     A trilha — o filete contínuo que atravessa a página.
+
+     Uma por seção, e como as seções se encostam, os filetes emendam
+     em uma linha só. Aparece a partir de 1280px, onde existe margem
+     sobrando: no mobile viraria sujeira ao lado do texto.
+     ---------------------------------------------------------------- */
+  .trilha {
+    display: none;
+  }
+
+  @media (min-width: 80rem) {
+    .trilha {
+      display: block;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: calc(max(0px, (100% - 76rem) / 2) + 1.15rem);
+      width: 1px;
+      background: linear-gradient(
+        to bottom,
+        var(--color-borda) 0,
+        var(--color-borda) calc(100% - 6rem),
+        transparent 100%
+      );
+      pointer-events: none;
+    }
+
+    /* Ponto de continuação: o losango pousado sobre a linha. */
+    .trilha::before {
+      content: "";
+      position: absolute;
+      top: 5.25rem;
+      left: 50%;
+      width: 7px;
+      height: 7px;
+      transform: translateX(-50%) rotate(45deg);
+      background: var(--color-vazio);
+      border: 1px solid var(--color-borda-viva);
+    }
+
+    /* No fim da página a linha desaparece por fade em vez de bater
+       num terminal. Nada termina aqui, inclusive a trilha. */
+    .trilha--fim {
+      background: linear-gradient(
+        to bottom,
+        var(--color-borda) 0,
+        transparent 92%
+      );
+    }
+
+    .trilha--fim::before {
+      display: none;
+    }
+  }
+
+  /* ----------------------------------------------------------------
+     Botões — três variantes, estados explícitos.
+     ---------------------------------------------------------------- */
+  .btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    border-radius: var(--radius-min);
+    border: 1px solid transparent;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    white-space: nowrap;
+    transition:
+      background-color 0.18s var(--ease-decidido),
+      border-color 0.18s var(--ease-decidido),
+      color 0.18s var(--ease-decidido),
+      transform 0.18s var(--ease-decidido);
+  }
+
+  .btn:active {
+    transform: translateY(1px);
+  }
+
+  .btn--determinacao {
+    background: var(--color-determinacao);
+    color: var(--color-vazio);
+  }
+
+  .btn--determinacao:hover {
+    background: var(--color-determinacao-viva);
+  }
+
+  .btn--contorno {
+    border-color: var(--color-contorno);
+    color: var(--color-texto);
+  }
+
+  .btn--contorno:hover {
+    border-color: var(--color-sistema);
+    color: var(--color-sistema-viva);
+  }
+
+  .btn--fantasma {
+    color: var(--color-texto-suave);
+  }
+
+  .btn--fantasma:hover {
+    color: var(--color-texto);
+  }
+
+  /* ----------------------------------------------------------------
+     Bloco: a caixa base do sistema. Borda em vez de sombra — sobre
+     preto, sombra não existe.
+     ---------------------------------------------------------------- */
+  .bloco {
+    border: 1px solid var(--color-borda);
+    border-radius: var(--radius-bloco);
+    background: var(--color-camada);
+  }
+
+  .bloco--vivo {
+    transition:
+      border-color 0.2s var(--ease-decidido),
+      background-color 0.2s var(--ease-decidido);
+  }
+
+  .bloco--vivo:hover {
+    border-color: var(--color-borda-viva);
+    background: var(--color-camada-alta);
+  }
+
+  /* Etiqueta de estado — o único lugar do site com monoespaçada. */
+  .estado {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-texto-fraco);
+  }
+
+  /* Campos de formulário */
+  .campo {
+    width: 100%;
+    border: 1px solid var(--color-contorno);
+    border-radius: var(--radius-min);
+    background: var(--color-camada-alta);
+    color: var(--color-texto);
+    padding: 0.75rem 0.9rem;
+    transition:
+      border-color 0.18s var(--ease-decidido),
+      background-color 0.18s var(--ease-decidido);
+  }
+
+  .campo::placeholder {
+    color: var(--color-texto-fraco);
+  }
+
+  .campo:hover {
+    border-color: var(--color-texto-suave);
+  }
+
+  .campo:focus {
+    border-color: var(--color-determinacao);
+    outline: none;
+  }
+
+  .campo[aria-invalid="true"] {
+    border-color: var(--color-determinacao);
+  }
+
+  /* ----------------------------------------------------------------
+     Aura — o degradê amplo e borrado que dá vida ao fundo das seções
+     escuras. É o brilho do núcleo da marca em escala grande, e nunca
+     fica parado: desliza em looping por padrão.
+
+     Posicionada só com `top`/`left`/`right`/`bottom` no elemento que a
+     usa — nunca com utilities de `transform` do Tailwind, porque a
+     animação abaixo assume dono exclusivo da propriedade `transform`
+     e uma sobrepor a outra apagaria a posição base.
+     ---------------------------------------------------------------- */
+  .aura {
+    position: absolute;
+    border-radius: 9999px;
+    pointer-events: none;
+    filter: blur(90px);
+    background: radial-gradient(
+      circle,
+      var(--aura-cor, var(--color-determinacao)) 0%,
+      transparent 70%
+    );
+    opacity: var(--aura-opacidade, 0.16);
+    animation: aura-deriva var(--aura-duracao, 22s) ease-in-out infinite alternate;
+  }
+
+  /* Variante conduzida por JavaScript (posição via `left`/`top` inline,
+     atualizada a cada movimento do ponteiro): a deriva automática sai da
+     jogada para não competir com o próprio cursor. */
+  .aura--ponteiro {
+    animation: none;
+    transition:
+      left 0.5s var(--ease-decidido),
+      top 0.5s var(--ease-decidido);
+  }
+
+  /* ----------------------------------------------------------------
+     Botão-núcleo — o reflexo que acompanha o cursor no CTA principal.
+     Só ganham esse tratamento os dois ou três botões mais importantes
+     da página; espalhá-lo por todo botão banalizaria o gesto.
+     ---------------------------------------------------------------- */
+  .btn-nucleo {
+    --mx: 50%;
+    --my: 50%;
+    overflow: hidden;
+  }
+
+  .btn-nucleo::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      110px circle at var(--mx) var(--my),
+      rgba(255, 255, 255, 0.32),
+      transparent 65%
+    );
+    opacity: 0;
+    transition: opacity 0.25s var(--ease-decidido);
+    pointer-events: none;
+  }
+
+  .btn-nucleo:hover::after {
+    opacity: 1;
+  }
+}
+
+/* Estrela: pisca em looping, no ritmo que a instância recebeu por variável
+   CSS. A opacidade nunca chega a zero — uma estrela apagada de vez pareceria
+   defeito de tela, não brilho fraco. */
+@keyframes estrela-piscar {
+  0%,
+  100% {
+    opacity: 0.15;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.estrela {
+  animation: estrela-piscar var(--estrela-duracao, 4s) ease-in-out infinite;
+  animation-delay: var(--estrela-atraso, 0s);
+}
+
+@keyframes aura-deriva {
+  0% {
+    transform: translate(-6%, -4%) scale(1);
+  }
+  50% {
+    transform: translate(6%, 5%) scale(1.08);
+  }
+  100% {
+    transform: translate(-3%, 6%) scale(0.96);
+  }
+}
+
+/* ==================================================================
+   Movimento
+   ================================================================== */
+
+@keyframes entrar {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes surgir {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* O núcleo respira. Um elemento vivo na página inteira — persistência
+   mostrada, não escrita. */
+@keyframes nucleo {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+@layer utilities {
+  .entrar {
+    animation: entrar 0.6s var(--ease-decidido) both;
+  }
+
+  .nucleo-vivo {
+    animation: nucleo 3.4s ease-in-out infinite;
+  }
+}
+
+/*
+  Revelação por scroll sem uma linha de JavaScript: a animação é
+  conduzida pela posição do elemento na tela, não por observador.
+
+  Fora do `@supports`, nada é aplicado — navegador sem suporte mostra
+  o conteúdo normalmente, que é o comportamento certo quando a
+  alternativa seria esconder texto esperando um script.
+*/
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    [data-surgir] {
+      animation: surgir linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 35%;
+    }
+  }
+}
+
+/*
+  Na impressão não existe rolagem, então a view timeline nunca progride e o
+  conteúdo sairia com opacidade zero — página em branco. O reset abaixo é o
+  que garante que ninguém imprima um documento vazio.
+*/
+@media print {
+  [data-surgir],
+  .entrar {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  /* Degradê e céu decorativos não têm função no papel — somem junto com o
+     resto dos enfeites que a impressão já limpa. */
+  .aura,
+  .estrela {
+    display: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
