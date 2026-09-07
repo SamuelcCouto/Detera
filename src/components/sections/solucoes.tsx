@@ -1,3 +1,4 @@
+import { Estrelas } from "@/components/sections/estrelas";
 import { Container } from "@/components/ui/container";
 import { IconeSeta } from "@/components/ui/icones";
 import { Section } from "@/components/ui/section";
@@ -13,7 +14,16 @@ export function Solucoes() {
       tone="camada"
       aria-labelledby="solucoes-titulo"
     >
-      <Container>
+      <Estrelas
+        quantidade={64}
+        semente={81213}
+        cadentes={4}
+        cometas={1}
+        nebulosa="mista"
+        className="opacity-75"
+      />
+
+      <Container className="relative">
         <h2 id="solucoes-titulo" className="text-display max-w-[15ch]">
           Quatro frentes, um sistema
         </h2>

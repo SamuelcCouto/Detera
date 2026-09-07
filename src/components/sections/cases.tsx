@@ -29,7 +29,13 @@ export function Cases() {
   return (
     /* id herdado do site anterior: `#projetos` já circula em links. */
     <Section id="projetos" tone="camada" aria-labelledby="cases-titulo">
-      <Estrelas quantidade={40} className="opacity-70" />
+      <Estrelas
+        quantidade={62}
+        cadentes={4}
+        cometas={1}
+        nebulosa="determinacao"
+        className="opacity-70"
+      />
 
       <Container className="relative">
         <h2 id="cases-titulo" className="text-display max-w-[15ch]">

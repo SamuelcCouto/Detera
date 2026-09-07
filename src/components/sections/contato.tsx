@@ -48,7 +48,13 @@ export function Contato() {
       space="generous"
       aria-labelledby="contato-titulo"
     >
-      <Estrelas quantidade={50} semente={9137} />
+      <Estrelas
+        quantidade={72}
+        semente={9137}
+        cadentes={4}
+        cometas={2}
+        nebulosa="mista"
+      />
 
       <Container className="relative">
         <div className="grid gap-14 md:grid-cols-2 md:gap-20">

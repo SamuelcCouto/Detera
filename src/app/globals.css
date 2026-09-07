@@ -412,11 +412,13 @@
   animation-delay: var(--estrela-atraso, 0s);
 }
 
-/* No celular a tela é menor e o aparelho quase sempre é mais fraco: metade
-   das estrelas some. A densidade continua parecida na área visível, e o
-   número de elementos animados cai pela metade. */
+/* No celular a tela é menor e o aparelho quase sempre é mais fraco. O céu
+   ficou bem mais denso do que era, então aqui sobra um terço das estrelas:
+   na largura de um telefone a área visível continua parecendo cheia, e o
+   número de elementos animados ao mesmo tempo cai para um terço. */
 @media (max-width: 640px) {
-  .estrela:nth-child(2n) {
+  .estrela:nth-child(2n),
+  .estrela:nth-child(3n) {
     display: none;
   }
 }
@@ -438,20 +440,29 @@
 }
 
 /* Cadente: aparece, atravessa e some. O ciclo é longo de propósito — se
-   passasse toda hora viraria protetor de tela. */
+   passasse toda hora viraria protetor de tela.
+
+   A posição fica parada durante quase todo o ciclo e só percorre o trecho
+   final: sem isso o risco já teria atravessado metade da tela antes de
+   acender, e apareceria sempre no mesmo canto.
+
+   O deslocamento e o ângulo chegam por variável, calculados juntos no
+   componente com `atan2` — é o que garante que cada risco aponte para onde
+   ele de fato anda. */
 @keyframes cadente-passa {
   0%,
-  94% {
+  93% {
     opacity: 0;
-    transform: translate3d(0, 0, 0) rotate(28deg) scaleX(0);
+    transform: translate3d(0, 0, 0) rotate(var(--risco-angulo, 28deg)) scaleX(0);
   }
-  95.5% {
+  94.5% {
     opacity: 1;
-    transform: translate3d(0, 0, 0) rotate(28deg) scaleX(1);
+    transform: translate3d(0, 0, 0) rotate(var(--risco-angulo, 28deg)) scaleX(1);
   }
   100% {
     opacity: 0;
-    transform: translate3d(120px, 64px, 0) rotate(28deg) scaleX(1);
+    transform: translate3d(var(--risco-dx, 120px), var(--risco-dy, 64px), 0)
+      rotate(var(--risco-angulo, 28deg)) scaleX(1);
   }
 }
 
@@ -459,9 +470,77 @@
   height: 1px;
   transform-origin: left center;
   background: linear-gradient(to right, transparent, var(--color-texto));
-  animation: cadente-passa var(--cadente-duracao, 22s) linear infinite;
-  animation-delay: var(--cadente-atraso, 0s);
+  animation: cadente-passa var(--risco-duracao, 22s) linear infinite;
+  animation-delay: var(--risco-atraso, 0s);
   opacity: 0;
+}
+
+/* ------------------------------------------------------------------
+   Cometa: o irmão grande da cadente. Cauda longa em degradê, cabeça
+   acesa com halo, e um ciclo de mais de um minuto — passa raro o
+   bastante para ser evento, não enfeite de fundo.
+
+   O elemento em si é um ponto sem dimensão: a cabeça e a cauda são os
+   dois pseudo-elementos, ancorados nele. Assim a viagem (`transform`
+   no pai) não briga com a orientação da cauda (`rotate` no filho).
+   ------------------------------------------------------------------ */
+@keyframes cometa-passa {
+  0%,
+  86% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+  89% {
+    opacity: 0.9;
+  }
+  97% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--risco-dx, 420px), var(--risco-dy, 190px), 0);
+  }
+}
+
+.cometa {
+  width: 0;
+  height: 0;
+  opacity: 0;
+  animation: cometa-passa var(--risco-duracao, 61s) cubic-bezier(0.3, 0, 0.7, 1) infinite;
+  animation-delay: var(--risco-atraso, 0s);
+}
+
+/* A cauda sai de trás da cabeça: a barra termina na origem e é girada
+   em torno da própria ponta direita, então ela aponta para o lado
+   contrário ao da viagem, sozinha, sem número escrito na mão. */
+.cometa::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: calc(1.5px * var(--cometa-escala, 1));
+  width: var(--cometa-cauda, 220px);
+  transform-origin: 100% 50%;
+  transform: rotate(var(--risco-angulo, 20deg));
+  background: linear-gradient(
+    to right,
+    transparent,
+    color-mix(in srgb, var(--cometa-cor, var(--color-texto)) 55%, transparent)
+  );
+  border-radius: 9999px;
+}
+
+.cometa::after {
+  content: "";
+  position: absolute;
+  top: calc(-2px * var(--cometa-escala, 1));
+  right: calc(-2px * var(--cometa-escala, 1));
+  width: calc(4px * var(--cometa-escala, 1));
+  height: calc(4px * var(--cometa-escala, 1));
+  border-radius: 9999px;
+  background: var(--cometa-cor, var(--color-texto));
+  box-shadow: 0 0 calc(9px * var(--cometa-escala, 1))
+    color-mix(in srgb, var(--cometa-cor, var(--color-texto)) 70%, transparent);
 }
 
 /* ------------------------------------------------------------------
@@ -692,7 +771,111 @@
   }
 }
 
+/* ------------------------------------------------------------------
+   A entrada do nome: cada letra cai como um meteoro.
+
+   Vem de cima e um pouco da direita, esticada na vertical e desfocada
+   — é assim que se desenha velocidade em algo que não tem rastro
+   próprio. Perto do chão ela achata, volta e assenta: sem esse
+   contragolpe a letra pousaria como um `fade-in` qualquer.
+
+   A brasa (`text-shadow` vermelha) some junto com o movimento. Ela é o
+   único momento do site em que o vermelho encosta na tipografia.
+   ------------------------------------------------------------------ */
+@keyframes meteoro-cai {
+  0% {
+    opacity: 0;
+    transform: translate3d(0.42em, -1.9em, 0) scale(0.78, 2.3);
+    filter: blur(5px);
+    text-shadow:
+      0 -0.55em 1.4em var(--color-determinacao),
+      0 0 0.5em var(--color-determinacao);
+  }
+  38% {
+    opacity: 1;
+  }
+  68% {
+    transform: translate3d(0, 0.07em, 0) scale(1.08, 0.86);
+    filter: blur(0);
+    text-shadow: 0 0 0.42em color-mix(in srgb, var(--color-determinacao) 60%, transparent);
+  }
+  84% {
+    transform: translate3d(0, -0.035em, 0) scale(0.98, 1.04);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+    text-shadow: none;
+  }
+}
+
+/* A luz que atravessa o nome depois que ele pousa.
+
+   É uma cópia do texto por cima da original, recortada nas próprias
+   letras (`background-clip: text`), com um degradê largo que desliza.
+   Faz-se assim, e não pintando as letras uma a uma, porque a luz tem
+   que atravessar a palavra inteira em movimento contínuo — letra
+   acendendo em sequência é outra coisa, e lê como pisca-pisca.
+
+   O degradê é branco nas duas pontas: fora da passagem, a cópia é
+   idêntica ao texto de baixo e ninguém percebe que ela existe. */
+@keyframes marca-luz {
+  0%,
+  56% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 @layer utilities {
+  .meteoro {
+    display: inline-block;
+    animation: meteoro-cai 0.78s cubic-bezier(0.22, 0.72, 0.3, 1) both;
+  }
+
+  /* Sem o recorte no texto, esta cópia não tem o que fazer na tela: seria
+     um retângulo com degradê e o nome escrito duas vezes por cima. Então
+     ela só existe onde o recorte existe. */
+  .marca-luz {
+    display: none;
+    pointer-events: none;
+  }
+
+  @supports ((background-clip: text) or (-webkit-background-clip: text)) {
+    .marca-luz {
+      display: block;
+      /* Transparente nas duas pontas, e não branco: fora da passagem a
+         cópia não pinta nada e quem aparece é o texto de baixo. É o que
+         permite as letras caírem sem esta camada por cima delas — e evita
+         dois brancos idênticos sobrepostos engrossando o desenho da
+         fonte. */
+      background-image: linear-gradient(
+        100deg,
+        transparent 0%,
+        transparent 38%,
+        color-mix(in srgb, var(--color-determinacao-viva) 88%, transparent) 50%,
+        transparent 62%,
+        transparent 100%
+      );
+      background-size: 320% 100%;
+      background-repeat: no-repeat;
+      /* 100%, e não 0%: com o degradê deslizando de 100% para 0% a luz
+         atravessa da esquerda para a direita, no sentido da leitura. Ao
+         contrário, ela entraria pelo fim do nome. */
+      background-position: 100% 50%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      /* Atraso negativo: o ciclo já começa adiantado dentro da própria
+         espera, e a primeira passagem cai logo depois de a última letra
+         pousar — não daqui a oito segundos. */
+      animation: marca-luz 8.5s cubic-bezier(0.45, 0, 0.25, 1) -3s infinite;
+    }
+  }
+
   .entrar {
     animation: entrar 0.6s var(--ease-decidido) both;
   }
@@ -727,17 +910,27 @@
 */
 @media print {
   [data-surgir],
-  .entrar {
+  .entrar,
+  .meteoro {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
+    filter: none !important;
+    text-shadow: none !important;
+  }
+
+  /* A cópia que carrega a luz sairia como um bloco branco por cima do
+     nome: no papel ela some e sobra o texto de baixo. */
+  .marca-luz {
+    display: none !important;
   }
 
   /* Degradê e céu decorativos não têm função no papel — somem junto com o
      resto dos enfeites que a impressão já limpa. */
   .aura,
   .estrela,
-  .cadente {
+  .cadente,
+  .cometa {
     display: none !important;
   }
 

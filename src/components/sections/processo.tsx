@@ -11,7 +11,17 @@ export function Processo() {
       tone="camada"
       aria-labelledby="processo-titulo"
     >
-      <Estrelas quantidade={32} semente={4242} className="opacity-60" />
+      {/* A seção mais longa da página era também a mais parada: só texto
+          numa faixa escura. O céu aqui é mais movimentado de propósito —
+          é ele que segura a leitura das cinco etapas. */}
+      <Estrelas
+        quantidade={68}
+        semente={4242}
+        cadentes={5}
+        cometas={2}
+        nebulosa="mista"
+        className="opacity-80"
+      />
 
       <Container className="relative">
         <div className="grid gap-10 md:grid-cols-[minmax(0,22rem)_1fr] md:gap-16">

@@ -1,5 +1,6 @@
 import { ButtonLink } from "@/components/ui/button";
 import { BotaoNucleo } from "@/components/ui/botao-nucleo";
+import { Estrelas } from "@/components/sections/estrelas";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { site } from "@/config/site";
@@ -14,6 +15,10 @@ export function Chamada() {
     <Section tone="vazio" space="compact" aria-labelledby="chamada-titulo">
       <Container>
         <div className="border-borda relative overflow-hidden rounded-[4px] border p-8 md:p-12">
+          {/* O céu também entra na faixa de decisão: sem ele, o único bloco
+              emoldurado da página seria o único trecho sem fundo vivo. */}
+          <Estrelas quantidade={38} semente={14411} cadentes={2} cometas={0} />
+
           {/* Brilho contido dentro do bloco, do lado da ação, à deriva. */}
           <div
             aria-hidden="true"

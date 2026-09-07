@@ -1,3 +1,4 @@
+import { TextoMeteoro } from "@/components/brand/texto-meteoro";
 import { Simbolo } from "@/components/brand/wordmark";
 import { Estrelas } from "@/components/sections/estrelas";
 import { Nave } from "@/components/sections/nave";
@@ -11,6 +12,9 @@ import { whatsappUrl } from "@/lib/utils/whatsapp";
 
 const mensagemHero =
   "Olá! Vim pelo site da DETERA e quero conversar sobre um projeto para a minha empresa.";
+
+/** Segundo em que a última letra do nome termina de pousar. */
+const FIM_DO_NOME = 0.15 + 5 * 0.075 + 0.78;
 
 /**
  * A trilha de frentes: as quatro áreas ligadas por uma linha com nós, e a
@@ -70,11 +74,11 @@ export function Hero() {
     >
       {/*
         O fundo do hero: um céu de estrelas piscando por baixo de uma luz
-        vermelha ambiente, à deriva. Nada aqui depende de mouse — funciona
-        igual no celular e no desktop, e é a razão de ter substituído o
-        brilho que só reagia ao cursor.
+        vermelha ambiente, à deriva, com cadentes e cometas cruzando. Nada
+        aqui depende de mouse — funciona igual no celular e no desktop, e é a
+        razão de ter substituído o brilho que só reagia ao cursor.
       */}
-      <Estrelas />
+      <Estrelas quantidade={96} cadentes={5} cometas={2} />
       <div
         aria-hidden="true"
         className="aura absolute h-[40rem] w-[40rem]"
@@ -104,16 +108,28 @@ export function Hero() {
       />
 
       {/*
-        A margem que sobra ao lado do conteúdo recebe o joguinho. O painel é
-        ancorado ao container (`right-full`), não à janela: assim ele nunca
-        invade o texto, só existe quando a margem comporta os 200px, e some
-        por completo abaixo de 1620px — onde não há espaço nem teclado.
+        A margem esquerda inteira é a área de jogo.
+
+        A largura sai de conta, não de palpite: `100%` aqui é a seção (a
+        largura da janela) e `76rem` é o container do conteúdo, então
+        `(100% - 76rem) / 2` é exatamente a sobra de um lado. Somam-se os
+        `2.5rem` de respiro interno do container, que também são espaço vazio,
+        e o painel encosta no texto sem nunca invadi-lo — em qualquer
+        resolução, sem media query de largura fixa.
+
+        O recuo da direita não é folga estética: a página tem uma trilha
+        vertical correndo rente ao container, e a área de jogo encostada nela
+        viraria um traço grosso só. Os 3rem separam as duas coisas.
+
+        Some por completo abaixo de 1680px: ali a sobra não comporta a área de
+        jogo, e quem entra pelo celular não tem teclado nem margem nenhuma.
       */}
-      <div className="pointer-events-none absolute inset-0 hidden justify-center [@media(min-width:1620px)]:flex">
-        <div className="relative w-full max-w-[76rem]">
-          <div className="pointer-events-auto absolute top-[12.5rem] right-full">
-            <Nave />
-          </div>
+      <div
+        className="pointer-events-none absolute inset-y-0 left-0 z-10 hidden [@media(min-width:1680px)]:block"
+        style={{ width: "calc((100% - 76rem) / 2 + 2.5rem)" }}
+      >
+        <div className="pointer-events-auto absolute inset-y-12 right-12 left-8">
+          <Nave />
         </div>
       </div>
 
@@ -121,23 +137,33 @@ export function Hero() {
         <Simbolo className="entrar text-borda-viva h-14 w-11" />
 
         <h1 id="hero-titulo" className="mt-8">
+          {/*
+            `w-fit` faz a caixa do nome parar onde a palavra para. É o que
+            mantém a luz vermelha atravessando "DETERA" e não a largura
+            inteira do container — a passagem tem que durar o nome.
+          */}
           <span
-            className="entrar text-marca font-display block font-black"
-            style={{ animationDelay: "0.05s", letterSpacing: "0.045em" }}
+            className="text-marca font-display relative block w-fit font-black"
+            style={{ letterSpacing: "0.045em" }}
           >
-            {site.name}
+            <TextoMeteoro texto={site.name} atraso={0.15} passo={0.075} />
+
+            {/* A cópia que carrega a luz. Mesma estrutura de letras da de
+                baixo, de propósito: qualquer outra montagem desalinharia as
+                duas por causa do espacejamento. */}
+            <span className="marca-luz absolute inset-0" aria-hidden="true">
+              <TextoMeteoro texto={site.name} animar={false} mudo />
+            </span>
           </span>
-          <span
-            className="entrar text-display text-texto mt-3 block font-normal"
-            style={{ animationDelay: "0.14s" }}
-          >
-            {site.slogan}
+
+          <span className="text-display text-texto mt-3 block font-normal">
+            <TextoMeteoro texto={site.slogan} atraso={FIM_DO_NOME - 0.34} passo={0.018} />
           </span>
         </h1>
 
         <p
           className="entrar text-lead text-texto-suave mt-8 max-w-[56ch]"
-          style={{ animationDelay: "0.22s" }}
+          style={{ animationDelay: "1.35s" }}
         >
           Toda ideia de negócio começa parecida com as outras. O nosso trabalho é
           tecnologia, estratégia e design aplicados até ela virar algo que só a
@@ -146,7 +172,7 @@ export function Hero() {
 
         <div
           className="entrar mt-9 flex flex-col gap-3 sm:flex-row"
-          style={{ animationDelay: "0.3s" }}
+          style={{ animationDelay: "1.5s" }}
         >
           <BotaoNucleo href={whatsappUrl(mensagemHero)}>Vamos construir</BotaoNucleo>
           <ButtonLink href="#solucoes" variant="contorno">

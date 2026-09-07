@@ -34,7 +34,14 @@ export function Personalidade() {
         }
       />
 
-      <Estrelas quantidade={45} semente={771} className="opacity-80" />
+      <Estrelas
+        quantidade={64}
+        semente={771}
+        cadentes={4}
+        cometas={1}
+        nebulosa="sistema"
+        className="opacity-80"
+      />
 
       <Container className="relative">
         <div className="max-w-[60ch]">

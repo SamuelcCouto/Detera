@@ -1,3 +1,4 @@
+import { Estrelas } from "@/components/sections/estrelas";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { site } from "@/config/site";
@@ -10,7 +11,16 @@ import { site } from "@/config/site";
 export function Sobre() {
   return (
     <Section id="sobre" tone="camada" aria-labelledby="sobre-titulo">
-      <Container>
+      <Estrelas
+        quantidade={56}
+        semente={62029}
+        cadentes={3}
+        cometas={1}
+        nebulosa="determinacao"
+        className="opacity-70"
+      />
+
+      <Container className="relative">
         <h2 id="sobre-titulo" className="text-display max-w-[14ch]">
           Por que a DETERA existe
         </h2>

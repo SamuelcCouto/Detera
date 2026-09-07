@@ -11,7 +11,14 @@ import { perguntas } from "@/content/perguntas";
 export function Perguntas() {
   return (
     <Section id="perguntas" tone="vazio" aria-labelledby="perguntas-titulo">
-      <Estrelas quantidade={30} semente={5150} className="opacity-60" />
+      <Estrelas
+        quantidade={52}
+        semente={5150}
+        cadentes={3}
+        cometas={1}
+        nebulosa="determinacao"
+        className="opacity-70"
+      />
 
       <Container className="relative">
         <div className="grid gap-10 md:grid-cols-[minmax(0,20rem)_1fr] md:gap-16">
