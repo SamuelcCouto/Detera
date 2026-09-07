@@ -9,6 +9,16 @@ import { cn } from "@/lib/utils/cn";
 const recadosDeObra = ["levantando as paredes", "conferindo o prumo", "quase lá"];
 
 /**
+ * Duração de uma volta completa do rodízio — de fotos e de recados.
+ *
+ * O ciclo é fixo e o intervalo entre um item e o próximo é que se ajusta ao
+ * número deles. Antes era o contrário (4s por item), e três recados davam
+ * uma volta de 12 segundos: quem passasse os olhos pelo card não via a
+ * segunda frase nunca.
+ */
+const CICLO = 6.9;
+
+/**
  * A moldura de navegador em volta da prévia do projeto: pontos, barra de
  * endereço com o domínio real, e o conteúdo dentro.
  *
@@ -88,8 +98,8 @@ export function PreviaCase({
               onError={() => setFalhou(true)}
               style={{
                 objectPosition: imagem.pos ?? "50% 50%",
-                animationDelay: `${indice * 4}s`,
-                animationDuration: `${imagens!.length * 4}s`,
+                animationDelay: `${(indice * CICLO) / imagens!.length}s`,
+                animationDuration: `${CICLO}s`,
               }}
               className={cn(
                 "absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]",
@@ -148,8 +158,8 @@ export function PreviaCase({
                   key={recado}
                   aria-hidden="true"
                   style={{
-                    animationDelay: `${indice * 4}s`,
-                    animationDuration: `${recadosDeObra.length * 4}s`,
+                    animationDelay: `${(indice * CICLO) / recadosDeObra.length}s`,
+                    animationDuration: `${CICLO}s`,
                   }}
                   className={cn(
                     "estado text-texto-fraco absolute inset-0 flex items-center justify-center whitespace-nowrap",

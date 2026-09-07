@@ -13,8 +13,18 @@ import { whatsappUrl } from "@/lib/utils/whatsapp";
 const mensagemHero =
   "Olá! Vim pelo site da DETERA e quero conversar sobre um projeto para a minha empresa.";
 
-/** Segundo em que a última letra do nome termina de pousar. */
-const FIM_DO_NOME = 0.15 + 5 * 0.075 + 0.78;
+/**
+ * Ritmo da entrada do título, num lugar só para as três partes não saírem
+ * de sincronia quando uma delas mudar.
+ *
+ * `QUEDA` tem que acompanhar a duração de `meteoro-cai` no CSS — é dela que
+ * sai o instante em que a última letra pousa, e é nesse instante que a luz
+ * vermelha começa a primeira passagem.
+ */
+const QUEDA = 0.66;
+const PASSO_NOME = 0.06;
+const ABERTURA = 0.12;
+const FIM_DO_NOME = ABERTURA + 5 * PASSO_NOME + QUEDA;
 
 /**
  * A trilha de frentes: as quatro áreas ligadas por uma linha com nós, e a
@@ -89,7 +99,7 @@ export function Hero() {
             marginLeft: "-20rem",
             "--aura-cor": "var(--color-determinacao)",
             "--aura-opacidade": 0.16,
-            "--aura-duracao": "26s",
+            "--aura-duracao": "6.8s",
           } as React.CSSProperties
         }
       />
@@ -102,7 +112,7 @@ export function Hero() {
             right: "8%",
             "--aura-cor": "var(--color-determinacao)",
             "--aura-opacidade": 0.14,
-            "--aura-duracao": "19s",
+            "--aura-duracao": "5.9s",
           } as React.CSSProperties
         }
       />
@@ -146,7 +156,7 @@ export function Hero() {
             className="text-marca font-display relative block w-fit font-black"
             style={{ letterSpacing: "0.045em" }}
           >
-            <TextoMeteoro texto={site.name} atraso={0.15} passo={0.075} />
+            <TextoMeteoro texto={site.name} atraso={ABERTURA} passo={PASSO_NOME} />
 
             {/* A cópia que carrega a luz. Mesma estrutura de letras da de
                 baixo, de propósito: qualquer outra montagem desalinharia as
@@ -157,13 +167,13 @@ export function Hero() {
           </span>
 
           <span className="text-display text-texto mt-3 block font-normal">
-            <TextoMeteoro texto={site.slogan} atraso={FIM_DO_NOME - 0.34} passo={0.018} />
+            <TextoMeteoro texto={site.slogan} atraso={FIM_DO_NOME - 0.34} passo={0.015} />
           </span>
         </h1>
 
         <p
           className="entrar text-lead text-texto-suave mt-8 max-w-[56ch]"
-          style={{ animationDelay: "1.35s" }}
+          style={{ animationDelay: "1.15s" }}
         >
           Toda ideia de negócio começa parecida com as outras. O nosso trabalho é
           tecnologia, estratégia e design aplicados até ela virar algo que só a
@@ -172,7 +182,7 @@ export function Hero() {
 
         <div
           className="entrar mt-9 flex flex-col gap-3 sm:flex-row"
-          style={{ animationDelay: "1.5s" }}
+          style={{ animationDelay: "1.3s" }}
         >
           <BotaoNucleo href={whatsappUrl(mensagemHero)}>Vamos construir</BotaoNucleo>
           <ButtonLink href="#solucoes" variant="contorno">

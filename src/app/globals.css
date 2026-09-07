@@ -351,7 +351,7 @@
       transparent 70%
     );
     opacity: var(--aura-opacidade, 0.16);
-    animation: aura-deriva var(--aura-duracao, 22s) ease-in-out infinite alternate;
+    animation: aura-deriva var(--aura-duracao, 6.6s) ease-in-out infinite alternate;
   }
 
   /* Variante conduzida por JavaScript (posição via `left`/`top` inline,
@@ -408,7 +408,7 @@
 }
 
 .estrela {
-  animation: estrela-piscar var(--estrela-duracao, 4s) ease-in-out infinite;
+  animation: estrela-piscar var(--estrela-duracao, 3.6s) ease-in-out infinite;
   animation-delay: var(--estrela-atraso, 0s);
 }
 
@@ -425,17 +425,21 @@
 
 /* A camada inteira sobe devagar. Uma transformação só, no contêiner, em vez
    de mexer em cada ponto: o compositor resolve sem tocar em layout. */
+/* Mesma lógica da aura: o percurso caiu de 6% para 1,8% porque a volta
+   inteira passou de 90 segundos para 7. Mantido o 6% original, a camada
+   de estrelas deslizaria uns 15px por segundo e o céu pareceria estar
+   escorregando pela tela. */
 @keyframes ceu-deriva {
   from {
-    transform: translate3d(0, 3%, 0);
+    transform: translate3d(0, 0.9%, 0);
   }
   to {
-    transform: translate3d(0, -3%, 0);
+    transform: translate3d(0, -0.9%, 0);
   }
 }
 
 .ceu-deriva {
-  animation: ceu-deriva 90s ease-in-out infinite alternate;
+  animation: ceu-deriva 7s ease-in-out infinite alternate;
   will-change: transform;
 }
 
@@ -470,7 +474,7 @@
   height: 1px;
   transform-origin: left center;
   background: linear-gradient(to right, transparent, var(--color-texto));
-  animation: cadente-passa var(--risco-duracao, 22s) linear infinite;
+  animation: cadente-passa var(--risco-duracao, 5.5s) linear infinite;
   animation-delay: var(--risco-atraso, 0s);
   opacity: 0;
 }
@@ -484,16 +488,23 @@
    dois pseudo-elementos, ancorados nele. Assim a viagem (`transform`
    no pai) não briga com a orientação da cauda (`rotate` no filho).
    ------------------------------------------------------------------ */
+/* A travessia ocupa quase metade do ciclo, e não um sétimo dele.
+
+   Com o ciclo inteiro em 6,2 segundos, manter a janela antiga faria o
+   cometa cruzar em menos de um segundo — indistinguível de uma cadente.
+   Abrindo a janela, ele atravessa em torno de 2,8s: bem mais rápido do
+   que era, e ainda visivelmente mais lento e mais graúdo que os riscos
+   curtos, que é o que separa as duas coisas. */
 @keyframes cometa-passa {
   0%,
-  86% {
+  55% {
     opacity: 0;
     transform: translate3d(0, 0, 0);
   }
-  89% {
+  62% {
     opacity: 0.9;
   }
-  97% {
+  93% {
     opacity: 0.7;
   }
   100% {
@@ -506,7 +517,7 @@
   width: 0;
   height: 0;
   opacity: 0;
-  animation: cometa-passa var(--risco-duracao, 61s) cubic-bezier(0.3, 0, 0.7, 1) infinite;
+  animation: cometa-passa var(--risco-duracao, 6.2s) cubic-bezier(0.3, 0, 0.7, 1) infinite;
   animation-delay: var(--risco-atraso, 0s);
 }
 
@@ -660,7 +671,7 @@
    navegador antigo — a prévia mostra uma foto em vez de um quadro vazio. */
 .previa-slide {
   opacity: 0;
-  animation: previa-troca var(--previa-duracao, 16s) ease-in-out infinite;
+  animation: previa-troca var(--previa-duracao, 6.9s) ease-in-out infinite;
 }
 
 /* A barra da obra enche e recomeça. É a piada: obra nunca termina. */
@@ -683,7 +694,7 @@
   /* Estado base parado em 70%: se a animação não rodar (movimento reduzido),
      a barra ainda lê como obra em andamento, não como obra concluída. */
   transform: scaleX(0.7);
-  animation: obra-barra 9s ease-in-out infinite;
+  animation: obra-barra 6.4s ease-in-out infinite;
 }
 
 @keyframes obra-pulso {
@@ -718,15 +729,18 @@
 
 .obra-recado {
   opacity: 0;
-  animation: obra-recado 12s ease-in-out infinite;
+  animation: obra-recado 6.9s ease-in-out infinite;
 }
 
+/* A amplitude encolheu junto com a duração. O mesmo passeio de 12% em
+   26 segundos era deriva; em 6,6 segundos vira balanço, e um borrão de
+   40rem balançando puxa o olho para longe do texto. */
 @keyframes aura-deriva {
   0% {
-    transform: translate(-6%, -4%) scale(1);
+    transform: translate(-3.5%, -2.5%) scale(1);
   }
   50% {
-    transform: translate(6%, 5%) scale(1.08);
+    transform: translate(3.5%, 3%) scale(1.045);
   }
   100% {
     transform: translate(-3%, 6%) scale(0.96);
@@ -820,9 +834,14 @@
 
    O degradê é branco nas duas pontas: fora da passagem, a cópia é
    idêntica ao texto de baixo e ninguém percebe que ela existe. */
+/* A espera encolheu e a passagem ficou mais curta: a luz atravessa em
+   torno de 1,9s e volta a cada 5,5s, contra 3,7s de travessia a cada
+   8,5s. Passa bem mais vezes e demora menos em cada vez — o jeito de
+   aumentar a frequência sem a luz virar presença constante sobre o
+   nome. */
 @keyframes marca-luz {
   0%,
-  56% {
+  66% {
     background-position: 100% 50%;
   }
   100% {
@@ -833,7 +852,7 @@
 @layer utilities {
   .meteoro {
     display: inline-block;
-    animation: meteoro-cai 0.78s cubic-bezier(0.22, 0.72, 0.3, 1) both;
+    animation: meteoro-cai 0.66s cubic-bezier(0.22, 0.72, 0.3, 1) both;
   }
 
   /* Sem o recorte no texto, esta cópia não tem o que fazer na tela: seria
@@ -872,7 +891,10 @@
       /* Atraso negativo: o ciclo já começa adiantado dentro da própria
          espera, e a primeira passagem cai logo depois de a última letra
          pousar — não daqui a oito segundos. */
-      animation: marca-luz 8.5s cubic-bezier(0.45, 0, 0.25, 1) -3s infinite;
+      /* O atraso negativo posiciona a primeira passagem logo depois de a
+         última letra pousar (a espera termina em 3,63s; adiantando 2,5s,
+         a luz entra por volta de 1,15s). */
+      animation: marca-luz 5.5s cubic-bezier(0.45, 0, 0.25, 1) -2.5s infinite;
     }
   }
 

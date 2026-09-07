@@ -29,7 +29,7 @@ export function Personalidade() {
             bottom: "-6rem",
             "--aura-cor": "var(--color-sistema)",
             "--aura-opacidade": 0.09,
-            "--aura-duracao": "26s",
+            "--aura-duracao": "6.5s",
           } as React.CSSProperties
         }
       />

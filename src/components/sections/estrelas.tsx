@@ -83,32 +83,38 @@ function gerarCeu(
     y: aleatorio() * 100,
     tamanho: aleatorio() < 0.14 ? 2 : 1,
     atraso: aleatorio() * 7,
-    duracao: 3 + aleatorio() * 5,
+    duracao: 2.2 + aleatorio() * 4.6,
     // Uma em cada oito puxa para o vermelho da marca. Não é enfeite: é o que
     // impede o céu de ser um céu genérico de template.
     quente: aleatorio() < 0.13,
   }));
 
   /**
-   * Cadentes: riscos curtos e rápidos. Cada uma tem ciclo próprio, sem
-   * divisor comum óbvio com as vizinhas, então elas quase nunca cruzam a tela
-   * juntas — o céu fica movimentado sem virar chuva de meteoros.
+   * Cadentes: riscos curtos e rápidos.
+   *
+   * Nenhum ciclo passa de 7 segundos, e nenhum é múltiplo de outro: elas
+   * repetem com frequência mas nunca em bloco, então o céu fica cheio de
+   * movimento sem que dois riscos saiam sempre juntos.
    */
-  const ciclos = [17, 23, 29, 37, 43, 53];
+  const ciclos = [4.3, 5.9, 6.7, 5.1, 6.3, 4.7];
   const cadentes: Risco[] = Array.from({ length: quantosCadentes }, (_, indice) => ({
     ...criarRisco(aleatorio, { comprimento: [64, 132], distancia: 150 }),
-    atraso: 2 + indice * 5 + aleatorio() * 7,
+    // O atraso é uma fase dentro do próprio ciclo, não uma espera somada.
+    // Escalonando em múltiplos de 5s, a quinta cadente só aparecia depois de
+    // meio minuto de página aberta — e o ciclo dela inteiro é de 6.
+    atraso: indice * 0.37 + aleatorio() * ciclos[indice % ciclos.length],
     duracao: ciclos[indice % ciclos.length],
   }));
 
   /**
-   * Cometas: maiores, mais lentos e com cabeça acesa. Passam de longe em
-   * longe — é o evento raro que faz valer a pena continuar olhando o fundo.
+   * Cometas: maiores, com cabeça acesa e cauda longa. Continuam sendo os
+   * corpos mais lentos do céu — o que os distingue das cadentes é a
+   * travessia demorada, não a raridade.
    */
   const cometas: Cometa[] = Array.from({ length: quantosCometas }, (_, indice) => ({
     ...criarRisco(aleatorio, { comprimento: [180, 300], distancia: 520 }),
-    atraso: 6 + indice * 19 + aleatorio() * 14,
-    duracao: 61 + indice * 24,
+    atraso: indice * 2.4 + aleatorio() * 2.6,
+    duracao: 5.6 + indice * 0.6,
     escala: 0.85 + aleatorio() * 0.7,
     quente: aleatorio() < 0.5,
   }));
@@ -183,7 +189,7 @@ export function Estrelas({
               height: `${nuvem.tamanho}rem`,
               "--aura-cor": nuvem.cor,
               "--aura-opacidade": nuvem.opacidade,
-              "--aura-duracao": `${24 + indice * 9}s`,
+              "--aura-duracao": `${6.1 + indice * 0.6}s`,
             } as React.CSSProperties
           }
         />

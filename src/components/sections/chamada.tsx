@@ -30,7 +30,7 @@ export function Chamada() {
                 marginTop: "-11rem",
                 "--aura-cor": "var(--color-determinacao)",
                 "--aura-opacidade": 0.12,
-                "--aura-duracao": "20s",
+                "--aura-duracao": "6.2s",
               } as React.CSSProperties
             }
           />
