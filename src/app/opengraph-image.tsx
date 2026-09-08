@@ -18,9 +18,9 @@ const frentes = ["Presença digital", "Crescimento", "Tecnologia", "Infraestrutu
  * O compartilhamento repete a primeira dobra: marca, slogan e as quatro
  * frentes ligadas por uma linha que continua depois da última.
  *
- * Sem fonte customizada de propósito — carregar o arquivo da Chivo em tempo de
- * build acrescenta uma requisição de rede que pode derrubar o deploy inteiro
- * por um motivo cosmético.
+ * Sem fonte customizada de propósito — carregar o arquivo da Orbitron em
+ * tempo de build acrescenta uma requisição de rede que pode derrubar o
+ * deploy inteiro por um motivo cosmético.
  */
 export default function OpenGraphImage() {
   return new ImageResponse(

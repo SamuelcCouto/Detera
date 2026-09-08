@@ -13,9 +13,12 @@
    Vermelho (determinação) = ação, estado ativo, o núcleo.
    Azul (sistema) = infraestrutura, dado, o que sustenta.
 
-   Tipografia: uma superfamília só. Chivo no display e no texto,
-   Chivo Mono reservado a microcopy de estado — a textura de interface
-   sem virar fantasia de terminal.
+   Tipografia: três fontes, cada uma na função certa. Orbitron nos
+   títulos e no nome da marca — geométrica, de traço largo, o mesmo
+   desenho já usado na wordmark. Rajdhani no texto corrido — a mesma
+   régua técnica, condensada, mas pensada para se ler em parágrafo, onde
+   Orbitron cansaria o olho. Share Tech Mono na microcopy de estado — o
+   traço de terminal que fecha o clima sem competir com o título.
    ================================================================== */
 @theme {
   /* Superfícies — preto com desvio de azul, nunca preto neutro */
@@ -45,9 +48,9 @@
   --color-sistema-funda: #10203f;
 
   /* Tipografia */
-  --font-display: var(--font-chivo), "Chivo", system-ui, -apple-system, sans-serif;
-  --font-sans: var(--font-chivo), "Chivo", system-ui, -apple-system, sans-serif;
-  --font-mono: var(--font-chivo-mono), "Chivo Mono", ui-monospace, monospace;
+  --font-display: var(--font-orbitron), "Orbitron", system-ui, -apple-system, sans-serif;
+  --font-sans: var(--font-rajdhani), "Rajdhani", system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-share-tech-mono), "Share Tech Mono", ui-monospace, monospace;
 
   /* Escala — salto largo no display, razão ~1.25 no corpo */
   --text-marca: clamp(3.25rem, 1rem + 9vw, 8rem);

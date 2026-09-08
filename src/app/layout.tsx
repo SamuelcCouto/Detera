@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Chivo, Chivo_Mono } from "next/font/google";
+import { Orbitron, Rajdhani, Share_Tech_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
@@ -7,25 +7,46 @@ import { isPublicDomain, site } from "@/config/site";
 import "./globals.css";
 
 /**
- * Uma superfamília só: Chivo no display e no texto, Chivo Mono reservado à
- * microcopy de estado. Duas fontes que já foram desenhadas para conviver
- * evitam o par display/corpo que não tem nada a ver um com o outro.
+ * Três fontes, cada uma na função que sabe fazer melhor — a mesma família
+ * para tudo (a escolha antiga) lia como um site institucional qualquer;
+ * isto lê como o painel de uma nave.
+ *
+ * `Orbitron` é a fonte do nome da marca e dos títulos: geométrica, de
+ * traço largo, letras quase montadas em módulos — é o desenho que já
+ * está na wordmark. Só existe pesada; por isso fica reservada ao display,
+ * onde o peso é a ideia, e nunca desce para parágrafo.
+ *
+ * `Rajdhani` puxa a mesma régua técnica — cantos quadrados, proporção
+ * condensada — mas foi desenhada para se ler em texto corrido, onde
+ * Orbitron cansaria o olho. É o par que sustenta o corpo do site sem
+ * abandonar o clima do título.
+ *
+ * `Share Tech Mono` substitui a Chivo Mono na microcopy de estado
+ * ("01 · Presença digital", os rótulos de "estado"): o traço de terminal
+ * onde antes havia só uma mono qualquer.
  *
  * Servidas pelo próprio domínio via next/font: sem requisição a CDN externa,
  * sem layout shift e sem custo de terceiro no Core Web Vitals.
  */
-const chivo = Chivo({
-  subsets: ["latin", "latin-ext"],
-  weight: ["400", "500", "700", "900"],
+const orbitron = Orbitron({
+  subsets: ["latin"],
+  weight: ["500", "600", "700", "800", "900"],
   display: "swap",
-  variable: "--font-chivo",
+  variable: "--font-orbitron",
 });
 
-const chivoMono = Chivo_Mono({
-  subsets: ["latin", "latin-ext"],
-  weight: ["400", "500"],
+const rajdhani = Rajdhani({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
   display: "swap",
-  variable: "--font-chivo-mono",
+  variable: "--font-rajdhani",
+});
+
+const shareTechMono = Share_Tech_Mono({
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+  variable: "--font-share-tech-mono",
 });
 
 const titulo = `${site.name} — ${site.tagline}`;
@@ -117,7 +138,10 @@ const recadoConsole = ((): string => {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" className={`${chivo.variable} ${chivoMono.variable}`}>
+    <html
+      lang="pt-BR"
+      className={`${orbitron.variable} ${rajdhani.variable} ${shareTechMono.variable}`}
+    >
       <body className="antialiased">
         {children}
         <script dangerouslySetInnerHTML={{ __html: recadoConsole }} />
