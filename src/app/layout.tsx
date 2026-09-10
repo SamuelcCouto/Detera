@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { Orbitron, Rajdhani, Share_Tech_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
@@ -7,48 +6,19 @@ import { isPublicDomain, site } from "@/config/site";
 import "./globals.css";
 
 /**
- * Três fontes, cada uma na função que sabe fazer melhor — a mesma família
- * para tudo (a escolha antiga) lia como um site institucional qualquer;
- * isto lê como o painel de uma nave.
+ * Tipografia: uma família só, Oxanium, do leve ao pesado.
  *
- * `Orbitron` é a fonte do nome da marca e dos títulos: geométrica, de
- * traço largo, letras quase montadas em módulos — é o desenho que já
- * está na wordmark. Só existe pesada; por isso fica reservada ao display,
- * onde o peso é a ideia, e nunca desce para parágrafo.
+ * Puxa a mesma personalidade do nome desenhado — os cantos chanfrados a
+ * 45°, a proporção larga — e ainda assim se lê em parágrafo. Pesada nos
+ * títulos, leve e espaçada no slogan e nos rótulos de estado, regular no
+ * texto corrido. O próprio "DETERA" não usa fonte nenhuma: é o desenho
+ * de `Letreiro`.
  *
- * `Rajdhani` puxa a mesma régua técnica — cantos quadrados, proporção
- * condensada — mas foi desenhada para se ler em texto corrido, onde
- * Orbitron cansaria o olho. É o par que sustenta o corpo do site sem
- * abandonar o clima do título.
- *
- * `Share Tech Mono` substitui a Chivo Mono na microcopy de estado
- * ("01 · Presença digital", os rótulos de "estado"): o traço de terminal
- * onde antes havia só uma mono qualquer.
- *
- * Servidas pelo próprio domínio via next/font: sem requisição a CDN externa,
- * sem layout shift e sem custo de terceiro no Core Web Vitals.
+ * Carregada por `@font-face` em `globals.css`, servida do próprio
+ * `public/fonts`, e não por `next/font`: o carregador do Turbopack não
+ * resolve os arquivos da Oxanium neste ambiente. O efeito é o mesmo —
+ * woff2 do próprio domínio, sem CDN, sem custo de terceiro.
  */
-const orbitron = Orbitron({
-  subsets: ["latin"],
-  weight: ["500", "600", "700", "800", "900"],
-  display: "swap",
-  variable: "--font-orbitron",
-});
-
-const rajdhani = Rajdhani({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  display: "swap",
-  variable: "--font-rajdhani",
-});
-
-const shareTechMono = Share_Tech_Mono({
-  subsets: ["latin"],
-  weight: "400",
-  display: "swap",
-  variable: "--font-share-tech-mono",
-});
-
 const titulo = `${site.name} — ${site.tagline}`;
 
 export const metadata: Metadata = {
@@ -138,10 +108,7 @@ const recadoConsole = ((): string => {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="pt-BR"
-      className={`${orbitron.variable} ${rajdhani.variable} ${shareTechMono.variable}`}
-    >
+    <html lang="pt-BR">
       <body className="antialiased">
         {children}
         <script dangerouslySetInnerHTML={{ __html: recadoConsole }} />

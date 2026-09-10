@@ -5,6 +5,8 @@ import {
   MARCA_METADE,
   MARCA_NUCLEO,
   MARCA_TRACOS,
+  NOME_DETERA,
+  NOME_DETERA_BARRA,
 } from "@/components/brand/marca-paths";
 import { site } from "@/config/site";
 
@@ -66,22 +68,22 @@ export default function OpenGraphImage() {
             <path d={MARCA_NUCLEO} fill="#ff3b3b" />
           </svg>
 
-          <div
-            style={{
-              marginTop: 30,
-              fontSize: 104,
-              fontWeight: 900,
-              letterSpacing: "0.05em",
-              lineHeight: 1,
-              display: "flex",
-              alignItems: "baseline",
-            }}
-          >
-            {site.name}
-            <div
-              style={{ width: 16, height: 16, background: "#ff3b3b", marginLeft: 12 }}
+          {/* O nome desenhado, os mesmos caminhos de `NOME_DETERA` que o
+              site usa — não a fonte da imagem, que aqui nem carrega. */}
+          <svg width="516" height="98" viewBox="0 0 676 128" style={{ marginTop: 34 }}>
+            <g fill="#f2f3f5" fillRule="evenodd">
+              {NOME_DETERA.map((letra) => (
+                <path key={letra.d} d={letra.d} />
+              ))}
+            </g>
+            <rect
+              x={NOME_DETERA_BARRA.x}
+              y={NOME_DETERA_BARRA.y}
+              width={NOME_DETERA_BARRA.largura}
+              height={NOME_DETERA_BARRA.altura}
+              fill="#ff3b3b"
             />
-          </div>
+          </svg>
 
           <div
             style={{

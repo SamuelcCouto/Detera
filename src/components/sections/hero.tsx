@@ -1,5 +1,5 @@
 import { TextoMeteoro } from "@/components/brand/texto-meteoro";
-import { Simbolo } from "@/components/brand/wordmark";
+import { Letreiro, Simbolo } from "@/components/brand/wordmark";
 import { Estrelas } from "@/components/sections/estrelas";
 import { Nave } from "@/components/sections/nave";
 import { ButtonLink } from "@/components/ui/button";
@@ -147,26 +147,17 @@ export function Hero() {
         <Simbolo className="entrar text-borda-viva h-14 w-11" />
 
         <h1 id="hero-titulo" className="mt-8">
-          {/*
-            `w-fit` faz a caixa do nome parar onde a palavra para. É o que
-            mantém a luz vermelha atravessando "DETERA" e não a largura
-            inteira do container — a passagem tem que durar o nome.
-          */}
-          <span
-            className="text-marca font-display relative block w-fit font-black"
-            style={{ letterSpacing: "0.045em" }}
-          >
-            <TextoMeteoro texto={site.name} atraso={ABERTURA} passo={PASSO_NOME} />
+          {/* O nome não é mais texto: é o desenho de `Letreiro`, letra por
+              letra caindo em meteoro e a luz vermelha atravessando depois —
+              a mesma coreografia de antes, agora com o chanfro certo. */}
+          <Letreiro
+            animado
+            atraso={ABERTURA}
+            passo={PASSO_NOME}
+            className="text-texto h-[clamp(3.1rem,0.6rem+9vw,7rem)] w-auto"
+          />
 
-            {/* A cópia que carrega a luz. Mesma estrutura de letras da de
-                baixo, de propósito: qualquer outra montagem desalinharia as
-                duas por causa do espacejamento. */}
-            <span className="marca-luz absolute inset-0" aria-hidden="true">
-              <TextoMeteoro texto={site.name} animar={false} mudo />
-            </span>
-          </span>
-
-          <span className="text-display text-texto mt-3 block font-normal">
+          <span className="text-display text-texto mt-4 block font-normal">
             <TextoMeteoro texto={site.slogan} atraso={FIM_DO_NOME - 0.34} passo={0.015} />
           </span>
         </h1>

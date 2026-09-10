@@ -7,8 +7,38 @@
  * ajustar um deles para a marca ficar diferente de si mesma sem ninguém
  * notar. Todos leem daqui.
  *
- * Sistema de coordenadas: `viewBox="0 0 32 40"`, centro em x = 16.
+ * Sistema de coordenadas do símbolo: `viewBox="0 0 32 40"`, centro em x = 16.
  */
+
+/**
+ * O nome "DETERA" desenhado — não é fonte, são seis letras vetorizadas,
+ * do jeito que wordmark de verdade se constrói. O que uma fonte não dá:
+ * o chanfro a 45° em cada terminal, a proporção larga, o "A" de topo
+ * reto com a tarja vermelha da marca no lugar da barra.
+ *
+ * Sistema de coordenadas: `viewBox="0 0 676 128"`, altura de caixa = 128.
+ * Cada letra é um caminho fechado; D, R e A carregam o contador como
+ * segundo subcaminho, então precisam de `fill-rule: evenodd`.
+ */
+export const NOME_DETERA_VIEWBOX = "0 0 676 128" as const;
+
+export const NOME_DETERA = [
+  { nome: "D", d: "M0 0 H64 L92 28 V100 L64 128 H0 Z M20 20 V108 H56 L72 92 V36 L56 20 Z" },
+  { nome: "E", d: "M116 0 H196 V20 H136 V54 H188 V74 H136 V108 H196 V128 H116 Z" },
+  { nome: "T", d: "M216 0 H316 V20 H276 V128 H256 V20 H216 Z" },
+  { nome: "E", d: "M340 0 H420 V20 H360 V54 H412 V74 H360 V108 H420 V128 H340 Z" },
+  {
+    nome: "R",
+    d: "M444 0 H508 L536 28 V56 L516 76 L540 128 H516 L494 80 H464 V128 H444 Z M464 20 V60 H500 L512 48 V32 L500 20 Z",
+  },
+  {
+    nome: "A",
+    d: "M560 128 L588 0 H636 L664 128 H640 L634 100 H590 L584 128 Z M596 62 H628 L618 20 H606 Z",
+  },
+] as const;
+
+/** A tarja da marca, no lugar da barra do "A". Cai junto com a última letra. */
+export const NOME_DETERA_BARRA = { x: 590, y: 72, largura: 30, altura: 16 } as const;
 
 /** Metade esquerda do coração, em placa chanfrada. A direita é espelhada. */
 export const MARCA_METADE =
