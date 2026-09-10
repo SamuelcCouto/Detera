@@ -157,7 +157,10 @@ export function Hero() {
             className="text-texto h-[clamp(3.1rem,0.6rem+9vw,7rem)] w-auto"
           />
 
-          <span className="text-display text-texto mt-4 block font-normal">
+          <span
+            className="text-display text-texto mt-4 block font-normal"
+            style={{ filter: "drop-shadow(0 3px 9px rgba(2, 3, 5, 0.6))" }}
+          >
             <TextoMeteoro texto={site.slogan} atraso={FIM_DO_NOME - 0.34} passo={0.015} />
           </span>
         </h1>

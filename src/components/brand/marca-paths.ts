@@ -12,33 +12,44 @@
 
 /**
  * O nome "DETERA" desenhado — não é fonte, são seis letras vetorizadas,
- * do jeito que wordmark de verdade se constrói. O que uma fonte não dá:
- * o chanfro a 45° em cada terminal, a proporção larga, o "A" de topo
- * reto com a tarja vermelha da marca no lugar da barra.
+ * traçadas em cima do render que o Samuel mandou: o que uma fonte não dá
+ * é o chanfro a 45° em cada terminal (inclusive na ponta do braço do
+ * meio do "E" e no pé afunilado do "T"), a proporção larga e o "A" de
+ * topo reto com a tarja vermelha da marca baixa, no lugar da barra.
  *
- * Sistema de coordenadas: `viewBox="0 0 676 128"`, altura de caixa = 128.
- * Cada letra é um caminho fechado; D, R e A carregam o contador como
- * segundo subcaminho, então precisam de `fill-rule: evenodd`.
+ * O relevo — a sombra macia que faz o nome flutuar — não está aqui: é um
+ * `filter` de CSS em cima do SVG inteiro (`.letreiro-relevo`).
+ *
+ * Sistema de coordenadas: `viewBox="0 0 716 128"`, altura de caixa = 128.
+ * Cada letra é um caminho fechado; D, E do meio, R e A carregam o
+ * contador como segundo subcaminho, então precisam de `fill-rule: evenodd`.
  */
-export const NOME_DETERA_VIEWBOX = "0 0 676 128" as const;
+export const NOME_DETERA_VIEWBOX = "0 0 716 128" as const;
 
 export const NOME_DETERA = [
-  { nome: "D", d: "M0 0 H64 L92 28 V100 L64 128 H0 Z M20 20 V108 H56 L72 92 V36 L56 20 Z" },
-  { nome: "E", d: "M116 0 H196 V20 H136 V54 H188 V74 H136 V108 H196 V128 H116 Z" },
-  { nome: "T", d: "M216 0 H316 V20 H276 V128 H256 V20 H216 Z" },
-  { nome: "E", d: "M340 0 H420 V20 H360 V54 H412 V74 H360 V108 H420 V128 H340 Z" },
+  { nome: "D", d: "M0 0 H62 L94 32 V96 L62 128 H0 Z M20 20 V108 H54 L74 88 V40 L54 20 Z" },
+  {
+    nome: "E",
+    d: "M116 16 L132 0 H210 V22 H138 V52 H188 L200 64 L188 76 H138 V106 H210 V128 H132 L116 112 Z",
+  },
+  { nome: "T", d: "M250 0 H322 L338 16 V22 H297 V128 H275 V22 H234 V16 Z" },
+  {
+    nome: "E",
+    d: "M358 16 L374 0 H452 V22 H380 V52 H430 L442 64 L430 76 H380 V106 H452 V128 H374 L358 112 Z",
+  },
   {
     nome: "R",
-    d: "M444 0 H508 L536 28 V56 L516 76 L540 128 H516 L494 80 H464 V128 H444 Z M464 20 V60 H500 L512 48 V32 L500 20 Z",
+    d: "M476 0 H540 L568 28 V56 L548 76 L572 128 H548 L526 80 H496 V128 H476 Z M496 20 V60 H532 L544 48 V32 L532 20 Z",
   },
   {
     nome: "A",
-    d: "M560 128 L588 0 H636 L664 128 H640 L634 100 H590 L584 128 Z M596 62 H628 L618 20 H606 Z",
+    d: "M596 128 L628 0 H676 L708 128 H681 L672 92 H632 L623 128 Z M642 68 H662 L652 24 Z",
   },
 ] as const;
 
-/** A tarja da marca, no lugar da barra do "A". Cai junto com a última letra. */
-export const NOME_DETERA_BARRA = { x: 590, y: 72, largura: 30, altura: 16 } as const;
+/** A tarja da marca, encostada na perna esquerda do "A", no lugar da barra.
+ *  Cai junto com a última letra. */
+export const NOME_DETERA_BARRA = { x: 630, y: 72, largura: 20, altura: 18 } as const;
 
 /** Metade esquerda do coração, em placa chanfrada. A direita é espelhada. */
 export const MARCA_METADE =

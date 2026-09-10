@@ -934,6 +934,17 @@
     animation: letra-meteoro 0.66s cubic-bezier(0.22, 0.72, 0.3, 1) both;
   }
 
+  /* O relevo do nome desenhado: uma sombra funda que assenta no fundo e um
+     halo claro por cima, o mesmo par que faz o render do Samuel flutuar —
+     só que aqui em cima de preto, então a sombra some no escuro e é o halo
+     que carrega a profundidade. Vai no SVG inteiro; a brasa vermelha da
+     queda mora nas letras, por dentro deste, e um não apaga o outro. */
+  .letreiro-relevo {
+    filter: drop-shadow(0 6px 12px rgba(2, 3, 5, 0.75))
+      drop-shadow(0 1px 2px rgba(2, 3, 5, 0.5))
+      drop-shadow(0 0 22px rgba(242, 243, 245, 0.11));
+  }
+
   .marca-varredura rect {
     transform-box: fill-box;
     transform-origin: left center;

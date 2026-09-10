@@ -96,7 +96,7 @@ export function Letreiro({
   return (
     <svg
       viewBox={NOME_DETERA_VIEWBOX}
-      className={cn("block h-auto", className)}
+      className={cn("letreiro-relevo block h-auto overflow-visible", className)}
       role="img"
       aria-label={site.name}
     >
