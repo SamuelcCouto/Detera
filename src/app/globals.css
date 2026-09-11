@@ -826,17 +826,17 @@
 }
 
 /* ------------------------------------------------------------------
-   A entrada do nome/slogan: cada letra cai como um meteoro.
+   A entrada do nome/slogan: cada letra (ou, no caso do nome, a imagem
+   inteira) cai como um meteoro.
 
    Vem de cima e um pouco da direita, esticada na vertical e desfocada
    — é assim que se desenha velocidade em algo que não tem rastro
    próprio. Perto do chão ela achata, volta e assenta: sem esse
    contragolpe a letra pousaria como um `fade-in` qualquer.
 
-   `meteoro-cai` é a versão texto (o slogan, ainda em `TextoMeteoro`);
-   `letra-meteoro` logo abaixo é a mesma coreografia para os `<path>` do
-   nome desenhado, com transformações em % (que acompanham o tamanho do
-   SVG) e a brasa vermelha como `drop-shadow`.
+   `meteoro-cai` é a versão texto (o slogan, em `TextoMeteoro`);
+   `wordmark-meteoro` logo abaixo é a mesma coreografia para a imagem do
+   nome — um bloco só, mais pesado, por isso cai um pouco mais devagar.
    ------------------------------------------------------------------ */
 @keyframes meteoro-cai {
   0% {
@@ -866,59 +866,51 @@
   }
 }
 
-/* A mesma queda, agora para os `<path>` do nome desenhado. As
-   transformações são em % — com `transform-box: fill-box` elas se medem
-   pela própria caixa de cada letra, então acompanham o SVG em qualquer
-   tamanho. A brasa vermelha vira `drop-shadow` (SVG não tem `text-shadow`). */
-@keyframes letra-meteoro {
+/* A mesma queda, para a imagem do nome. As transformações são em % (%
+   de `transform` num elemento HTML normal já se mede pela própria caixa,
+   sem precisar de `transform-box`), e a brasa vermelha vira `drop-shadow`
+   em vez de `text-shadow` — a imagem já tem a própria sombra desenhada. */
+@keyframes wordmark-meteoro {
   0% {
     opacity: 0;
-    transform: translate(34%, -180%) scale(0.8, 2.3);
-    filter: blur(3px) drop-shadow(0 -14px 22px var(--color-determinacao));
+    transform: translate3d(4%, -170%, 0) scale(0.84, 2.1);
+    filter: blur(6px) drop-shadow(0 -18px 30px var(--color-determinacao));
   }
-  38% {
+  40% {
     opacity: 1;
   }
   68% {
-    transform: translate(0, 6%) scale(1.08, 0.86);
+    transform: translate3d(0, 5%, 0) scale(1.05, 0.9);
     filter: blur(0)
-      drop-shadow(0 0 8px color-mix(in srgb, var(--color-determinacao) 60%, transparent));
+      drop-shadow(0 0 14px color-mix(in srgb, var(--color-determinacao) 55%, transparent));
   }
-  84% {
-    transform: translate(0, -3%) scale(0.98, 1.04);
+  86% {
+    transform: translate3d(0, -2.5%, 0) scale(0.99, 1.02);
   }
   100% {
     opacity: 1;
     transform: none;
-    filter: none;
+    /* Termina no relevo — a mesma sombra funda + halo claro de
+       `.wordmark-meteoro` — e não em `none`: a animação sobrescreve o
+       `filter` estático enquanto roda, então o quadro final precisa ser
+       ele mesmo o relevo, ou a marca pousaria sem sombra nenhuma. */
+    filter: drop-shadow(0 6px 12px rgba(2, 3, 5, 0.7)) drop-shadow(0 0 20px rgba(242, 243, 245, 0.1));
   }
 }
 
 /* A luz que atravessa o nome depois que ele pousa: uma faixa vermelha
-   recortada nas próprias letras (`clipPath`), deslizando da esquerda
-   para a direita. Volta a cada 5,5s e a travessia dura ~2,2s — passa
-   bastante sem virar presença constante sobre o nome. O atraso negativo
-   põe a primeira passagem logo depois de a última letra pousar (~1,15s),
-   não daqui a alguns segundos. */
-/* A faixa é um `<rect>` de 280 unidades que começa fora da vista à
-   esquerda (`x = -280`) e desliza para a direita. `transform-box:
-   fill-box` faz o `translateX` em % se medir pela largura da própria
-   faixa, então a travessia acompanha o SVG em qualquer tamanho. Se o
-   navegador não animar, a faixa fica parada fora da vista: sem luz, sem
-   defeito. */
-@keyframes varredura-detera {
+   recortada na própria transparência da imagem (`mask-image`), deslizando
+   da esquerda para a direita. Volta a cada 5,5s e a travessia dura ~2,2s —
+   passa bastante sem virar presença constante sobre o nome. O atraso
+   negativo põe a primeira passagem logo depois de a imagem pousar (~1,3s
+   depois de `wordmark-meteoro` começar), não daqui a alguns segundos. */
+@keyframes wordmark-varredura {
   0%,
   58% {
-    transform: translateX(0);
-    opacity: 0;
-  }
-  66%,
-  90% {
-    opacity: 1;
+    background-position: 100% 50%;
   }
   100% {
-    transform: translateX(360%);
-    opacity: 0;
+    background-position: 0% 50%;
   }
 }
 
@@ -928,27 +920,27 @@
     animation: meteoro-cai 0.66s cubic-bezier(0.22, 0.72, 0.3, 1) both;
   }
 
-  .letra-meteoro {
-    transform-box: fill-box;
-    transform-origin: 50% 100%;
-    animation: letra-meteoro 0.66s cubic-bezier(0.22, 0.72, 0.3, 1) both;
+  .wordmark-meteoro {
+    animation: wordmark-meteoro 0.85s cubic-bezier(0.22, 0.72, 0.3, 1) both;
+    /* A sombra do próprio recorte assenta no preto; o halo claro por cima
+       é o que carrega o relevo no escuro. */
+    filter: drop-shadow(0 6px 12px rgba(2, 3, 5, 0.7))
+      drop-shadow(0 0 20px rgba(242, 243, 245, 0.1));
   }
 
-  /* O relevo do nome desenhado: uma sombra funda que assenta no fundo e um
-     halo claro por cima, o mesmo par que faz o render do Samuel flutuar —
-     só que aqui em cima de preto, então a sombra some no escuro e é o halo
-     que carrega a profundidade. Vai no SVG inteiro; a brasa vermelha da
-     queda mora nas letras, por dentro deste, e um não apaga o outro. */
-  .letreiro-relevo {
-    filter: drop-shadow(0 6px 12px rgba(2, 3, 5, 0.75))
-      drop-shadow(0 1px 2px rgba(2, 3, 5, 0.5))
-      drop-shadow(0 0 22px rgba(242, 243, 245, 0.11));
-  }
-
-  .marca-varredura rect {
-    transform-box: fill-box;
-    transform-origin: left center;
-    animation: varredura-detera 5.5s cubic-bezier(0.45, 0, 0.25, 1) -2.15s infinite;
+  .wordmark-varredura {
+    background-image: linear-gradient(
+      100deg,
+      transparent 0%,
+      transparent 38%,
+      color-mix(in srgb, var(--color-determinacao-viva) 88%, transparent) 50%,
+      transparent 62%,
+      transparent 100%
+    );
+    background-size: 320% 100%;
+    background-repeat: no-repeat;
+    background-position: 100% 50%;
+    animation: wordmark-varredura 5.5s cubic-bezier(0.45, 0, 0.25, 1) -2.5s infinite;
   }
 
   .entrar {
@@ -987,7 +979,7 @@
   [data-surgir],
   .entrar,
   .meteoro,
-  .letra-meteoro {
+  .wordmark-meteoro {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
@@ -996,7 +988,7 @@
   }
 
   /* A faixa de luz do nome não tem função no papel. */
-  .marca-varredura {
+  .wordmark-varredura {
     display: none !important;
   }
 

@@ -1,5 +1,5 @@
 import { TextoMeteoro } from "@/components/brand/texto-meteoro";
-import { Letreiro, Simbolo } from "@/components/brand/wordmark";
+import { MarcaImagem, Simbolo } from "@/components/brand/wordmark";
 import { Estrelas } from "@/components/sections/estrelas";
 import { Nave } from "@/components/sections/nave";
 import { ButtonLink } from "@/components/ui/button";
@@ -14,17 +14,18 @@ const mensagemHero =
   "Olá! Vim pelo site da DETERA e quero conversar sobre um projeto para a minha empresa.";
 
 /**
- * Ritmo da entrada do título, num lugar só para as três partes não saírem
+ * Ritmo da entrada do título, num lugar só para as duas partes não saírem
  * de sincronia quando uma delas mudar.
  *
- * `QUEDA` tem que acompanhar a duração de `meteoro-cai` no CSS — é dela que
- * sai o instante em que a última letra pousa, e é nesse instante que a luz
- * vermelha começa a primeira passagem.
+ * `QUEDA_MARCA` tem que acompanhar a duração de `wordmark-meteoro` no CSS —
+ * é dela que sai o instante em que a imagem pousa, e é nesse instante que a
+ * luz vermelha começa a primeira passagem. A imagem cai como um bloco só
+ * (não dá para animar letra a letra fora de vetor), por isso a queda é mais
+ * pesada e um pouco mais lenta que a do slogan em texto.
  */
-const QUEDA = 0.66;
-const PASSO_NOME = 0.06;
+const QUEDA_MARCA = 0.85;
 const ABERTURA = 0.12;
-const FIM_DO_NOME = ABERTURA + 5 * PASSO_NOME + QUEDA;
+const FIM_DO_NOME = ABERTURA + QUEDA_MARCA;
 
 /**
  * A trilha de frentes: as quatro áreas ligadas por uma linha com nós, e a
@@ -147,14 +148,14 @@ export function Hero() {
         <Simbolo className="entrar text-borda-viva h-14 w-11" />
 
         <h1 id="hero-titulo" className="mt-8">
-          {/* O nome não é mais texto: é o desenho de `Letreiro`, letra por
-              letra caindo em meteoro e a luz vermelha atravessando depois —
-              a mesma coreografia de antes, agora com o chanfro certo. */}
-          <Letreiro
+          {/* O nome não é mais texto nem vetor: é o recorte real do render
+              que o Samuel mandou, caindo como um meteoro inteiro e com a
+              luz vermelha atravessando depois — a mesma coreografia de
+              antes, agora sobre a arte final. */}
+          <MarcaImagem
             animado
             atraso={ABERTURA}
-            passo={PASSO_NOME}
-            className="text-texto h-[clamp(3.1rem,0.6rem+9vw,7rem)] w-auto"
+            className="h-[clamp(2.8rem,0.5rem+8.3vw,6.4rem)]"
           />
 
           <span
