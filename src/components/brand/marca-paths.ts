@@ -15,16 +15,19 @@
  * traçadas em cima do render que o Samuel mandou: o que uma fonte não dá
  * é o chanfro a 45° em cada terminal (inclusive na ponta do braço do
  * meio do "E" e no pé afunilado do "T"), a proporção larga e o "A" de
- * topo reto com a tarja vermelha da marca baixa, no lugar da barra.
+ * topo reto — sem barra, sem tarja: o símbolo é que vai embaixo dele.
  *
  * O relevo — a sombra macia que faz o nome flutuar — não está aqui: é um
  * `filter` de CSS em cima do SVG inteiro (`.letreiro-relevo`).
  *
- * Sistema de coordenadas: `viewBox="0 0 716 128"`, altura de caixa = 128.
- * Cada letra é um caminho fechado; D, E do meio, R e A carregam o
- * contador como segundo subcaminho, então precisam de `fill-rule: evenodd`.
+ * Sistema de coordenadas: `viewBox="0 0 716 202"`. As letras ocupam
+ * y 0–128; o espaço de y 128 a 202 é reservado para o símbolo pequeno sob
+ * o "A" (`ALTURA_LETRAS` marca essa divisa). Cada letra é um caminho
+ * fechado; D, E do meio, R e A carregam o contador como segundo
+ * subcaminho, então precisam de `fill-rule: evenodd`.
  */
-export const NOME_DETERA_VIEWBOX = "0 0 716 128" as const;
+export const NOME_DETERA_VIEWBOX = "0 0 716 202" as const;
+export const ALTURA_LETRAS = 128;
 
 export const NOME_DETERA = [
   { nome: "D", d: "M0 0 H62 L94 32 V96 L62 128 H0 Z M20 20 V108 H54 L74 88 V40 L54 20 Z" },
@@ -46,10 +49,6 @@ export const NOME_DETERA = [
     d: "M596 128 L628 0 H676 L708 128 H681 L672 92 H632 L623 128 Z M642 68 H662 L652 24 Z",
   },
 ] as const;
-
-/** A tarja da marca, encostada na perna esquerda do "A", no lugar da barra.
- *  Cai junto com a última letra. */
-export const NOME_DETERA_BARRA = { x: 630, y: 72, largura: 20, altura: 18 } as const;
 
 /** Metade esquerda do coração, em placa chanfrada. A direita é espelhada. */
 export const MARCA_METADE =

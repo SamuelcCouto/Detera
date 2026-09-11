@@ -6,7 +6,6 @@ import {
   MARCA_NUCLEO,
   MARCA_TRACOS,
   NOME_DETERA,
-  NOME_DETERA_BARRA,
 } from "@/components/brand/marca-paths";
 import { site } from "@/config/site";
 
@@ -69,20 +68,17 @@ export default function OpenGraphImage() {
           </svg>
 
           {/* O nome desenhado, os mesmos caminhos de `NOME_DETERA` que o
-              site usa — não a fonte da imagem, que aqui nem carrega. */}
-          <svg width="516" height="98" viewBox="0 0 676 128" style={{ marginTop: 34 }}>
+              site usa — não a fonte da imagem, que aqui nem carrega. Sem
+              tarja vermelha: o "A" ficou só com o topo reto, do jeito que
+              o site desenha agora (o símbolo pequeno que foi para debaixo
+              do "A" no site fica de fora aqui — o símbolo cheio já abre a
+              imagem, logo acima). */}
+          <svg width="548" height="98" viewBox="0 0 716 128" style={{ marginTop: 34 }}>
             <g fill="#f2f3f5" fillRule="evenodd">
               {NOME_DETERA.map((letra) => (
                 <path key={letra.d} d={letra.d} />
               ))}
             </g>
-            <rect
-              x={NOME_DETERA_BARRA.x}
-              y={NOME_DETERA_BARRA.y}
-              width={NOME_DETERA_BARRA.largura}
-              height={NOME_DETERA_BARRA.altura}
-              fill="#ff3b3b"
-            />
           </svg>
 
           <div
