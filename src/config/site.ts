@@ -42,7 +42,7 @@ export const site = {
     phone: "(62) 9 8475-0989",
     phoneE164: "+5562984750989",
     whatsapp: env(process.env.NEXT_PUBLIC_WHATSAPP_NUMBER) ?? "5562984750989",
-    email: "samuelcouto2122@gmail.com",
+    email: "deteraoficial@gmail.com",
     linkedin: "https://www.linkedin.com/in/samuel-couto-557547287/",
     github: "https://github.com/SamuelcCouto",
   },
