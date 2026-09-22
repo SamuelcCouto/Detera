@@ -71,9 +71,14 @@ Acento nunca é decoração. Se um elemento não é ação nem sistema, ele é c
 limite de componente interativo precisa de 3:1 contra o fundo (WCAG 1.4.11), e o
 filete que separa dois blocos não.
 
-**Tipografia.** Uma superfamília: Chivo no display e no texto, Chivo Mono
-reservada à microcopy de estado (números de etapa, rótulos de sistema). Servidas
-pelo próprio domínio via `next/font`.
+**Tipografia.** Uma família só, Oxanium, do peso 200 ao 800: os cantos
+chanfrados e a proporção larga puxam a personalidade do nome desenhado, e ainda
+assim ela se lê em parágrafo. O próprio "DETERA" não é fonte — é o desenho de
+`NOME_DETERA` em `marca-paths.ts`. Os títulos de seção têm três volumes
+(`display`, `subdisplay`, `title`), atribuídos pelo peso do que a seção diz.
+Servida pelo próprio domínio por `@font-face` em `globals.css`, e não por
+`next/font`: o carregador do Turbopack não resolve os arquivos da Oxanium neste
+ambiente.
 
 **Forma.** Raio curto (2px e 4px) e borda no lugar de sombra — sobre preto,
 sombra não existe.
