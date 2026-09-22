@@ -5,6 +5,29 @@ export type ImagemPrevia = {
   pos?: string;
 };
 
+/**
+ * Notas do PageSpeed Insights no perfil de celular — o mais difícil (aparelho
+ * intermediário simulado, 4G lento), e o de onde vem a maior parte do tráfego.
+ *
+ * Medidas, não estimadas: `relatorio` é o link permanente daquela execução,
+ * então o número aqui é o mesmo que aparece para quem clicar. É o único
+ * número dos cases por isso — qualquer pessoa consegue refazer o teste.
+ *
+ * Uma execução só, a primeira. Rodar de novo até sair um número melhor seria
+ * escolher o resultado, e o perfil de computador (onde os dois sites passam
+ * de 99) ficou de fora pelo mesmo motivo. Quando o site mudar, mede de novo
+ * e troca tudo junto: data, notas e link.
+ */
+export type Medicao = {
+  /** Dia em que o teste rodou, em ISO. */
+  data: string;
+  relatorio: string;
+  desempenho: number;
+  acessibilidade: number;
+  praticas: number;
+  seo: number;
+};
+
 export type Case = {
   id: string;
   cliente: string;
@@ -27,6 +50,7 @@ export type Case = {
    * Mais de uma imagem vira um slideshow discreto (ver `PreviaCase`).
    */
   imagens: ImagemPrevia[];
+  medicao?: Medicao;
 };
 
 /**
@@ -75,6 +99,15 @@ export const cases: Case[] = [
         pos: "50% 38%",
       },
     ],
+    medicao: {
+      data: "2026-09-22",
+      relatorio:
+        "https://pagespeed.web.dev/analysis/https-sencis-com-br/zumysj1csa?form_factor=mobile",
+      desempenho: 91,
+      acessibilidade: 90,
+      praticas: 100,
+      seo: 100,
+    },
   },
   {
     id: "fidele",
@@ -121,5 +154,14 @@ export const cases: Case[] = [
         pos: "50% 25%",
       },
     ],
+    medicao: {
+      data: "2026-09-22",
+      relatorio:
+        "https://pagespeed.web.dev/analysis/https-fideleoficial-com-br/ziithdfxqh?form_factor=mobile",
+      desempenho: 76,
+      acessibilidade: 96,
+      praticas: 96,
+      seo: 100,
+    },
   },
 ];

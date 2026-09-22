@@ -6,8 +6,76 @@ import { ButtonLink } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { IconeLinkExterno } from "@/components/ui/icones";
 import { Section } from "@/components/ui/section";
-import { cases } from "@/content/cases";
+import { cases, type Medicao } from "@/content/cases";
 import { projetosEmConstrucao } from "@/content/em-construcao";
+
+/**
+ * Fuso fixo em UTC: `new Date("2026-09-22")` é meia-noite em UTC, e formatado
+ * no fuso de Brasília viraria dia 21 num build feito aqui — o mesmo dado
+ * saindo com datas diferentes dependendo de onde o site foi compilado.
+ */
+const formatarData = new Intl.DateTimeFormat("pt-BR", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+  timeZone: "UTC",
+});
+
+/**
+ * As notas medidas do site no ar, com a origem logo abaixo: perfil, fonte,
+ * data e o link do relatório. A procedência vem junto do número, não num
+ * rodapé separado — número sem origem é exatamente o tipo de coisa que este
+ * site se recusa a publicar.
+ *
+ * As notas não ganham as cores de semáforo do Google. O número de 0 a 100 já
+ * se explica, e verde/laranja/vermelho trariam para dentro do card a
+ * linguagem visual de outra ferramenta. Quem quiser a leitura colorida tem o
+ * relatório a um clique.
+ *
+ * `@container`: o card muda de largura conforme a grade (coluna única no
+ * celular, duas colunas estreitas no tablet, duas largas no desktop), e é a
+ * largura do card — não a da tela — que decide se as quatro notas cabem
+ * lado a lado ou vão em duas linhas.
+ */
+function NotasMedidas({ medicao }: { medicao: Medicao }) {
+  const notas = [
+    { rotulo: "Desempenho", valor: medicao.desempenho },
+    { rotulo: "Acessibilidade", valor: medicao.acessibilidade },
+    { rotulo: "Práticas recomendadas", valor: medicao.praticas },
+    { rotulo: "SEO", valor: medicao.seo },
+  ];
+
+  return (
+    <figure className="@container border-borda mt-5 border-t pt-4">
+      <dl className="grid grid-cols-2 gap-x-4 gap-y-3 @md:grid-cols-4">
+        {notas.map((nota) => (
+          <div key={nota.rotulo} className="flex flex-col gap-1">
+            {/* No DOM o rótulo vem antes (leitor de tela diz "Desempenho,
+                91"); na tela o número sobe para cima dele. */}
+            <dt className="text-texto-fraco text-[0.74rem] leading-tight">{nota.rotulo}</dt>
+            <dd className="font-display text-texto order-first text-[1.6rem] leading-none font-bold tabular-nums">
+              {nota.valor}
+            </dd>
+          </div>
+        ))}
+      </dl>
+
+      <figcaption className="text-texto-fraco mt-3.5 text-[0.8rem] leading-relaxed">
+        Celular com 4G lento, simulado pelo PageSpeed Insights do Google em{" "}
+        <time dateTime={medicao.data}>{formatarData.format(new Date(medicao.data))}</time>.{" "}
+        <a
+          href={medicao.relatorio}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-texto-suave hover:text-texto decoration-borda-viva inline-flex items-center gap-1 underline underline-offset-4 transition-colors"
+        >
+          Abrir o relatório
+          <IconeLinkExterno className="h-3.5 w-3.5 shrink-0" />
+        </a>
+      </figcaption>
+    </figure>
+  );
+}
 
 /**
  * Rótulo de etapa do case, empilhado (não em coluna ao lado do texto): o card
@@ -74,6 +142,8 @@ export function Cases() {
                     </li>
                   ))}
                 </ul>
+
+                {caso.medicao ? <NotasMedidas medicao={caso.medicao} /> : null}
 
                 {/*
                   A história inteira fica recolhida. Quem só quer saber quem é o
