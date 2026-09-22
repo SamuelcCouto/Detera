@@ -11,19 +11,20 @@ import { perguntas } from "@/content/perguntas";
 export function Perguntas() {
   return (
     <Section id="perguntas" tone="vazio" aria-labelledby="perguntas-titulo">
+      {/* O ponto mais quieto da página: a pessoa chega aqui para tirar uma
+          dúvida objetiva, não para ser impressionada. */}
       <Estrelas
-        quantidade={52}
+        quantidade={16}
         semente={5150}
-        cadentes={3}
-        cometas={1}
-        nebulosa="determinacao"
-        className="opacity-70"
+        cadentes={1}
+        cometas={0}
+        className="opacity-35"
       />
 
       <Container className="relative">
         <div className="grid gap-10 md:grid-cols-[minmax(0,20rem)_1fr] md:gap-16">
           <div className="md:sticky md:top-28 md:self-start">
-            <h2 id="perguntas-titulo" className="text-display max-w-[12ch]">
+            <h2 id="perguntas-titulo" className="text-title max-w-[16ch]">
               Antes de falar com a gente
             </h2>
             <p className="text-lead text-texto-suave mt-5 max-w-[34ch]">

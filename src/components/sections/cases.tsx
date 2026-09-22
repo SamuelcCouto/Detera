@@ -29,16 +29,18 @@ export function Cases() {
   return (
     /* id herdado do site anterior: `#projetos` já circula em links. */
     <Section id="projetos" tone="camada" aria-labelledby="cases-titulo">
+      {/* Céu discreto: os dois cases trazem imagem real e cheia de cor, e é
+          nelas que o olho deve bater primeiro. */}
       <Estrelas
-        quantidade={62}
-        cadentes={4}
+        quantidade={30}
+        cadentes={2}
         cometas={1}
         nebulosa="determinacao"
-        className="opacity-70"
+        className="opacity-50"
       />
 
       <Container className="relative">
-        <h2 id="cases-titulo" className="text-display max-w-[15ch]">
+        <h2 id="cases-titulo" className="text-subdisplay max-w-[15ch]">
           O que já construímos
         </h2>
         <p className="text-lead text-texto-suave mt-5 max-w-[60ch]">

@@ -14,13 +14,15 @@ export function Solucoes() {
       tone="camada"
       aria-labelledby="solucoes-titulo"
     >
+      {/* A seção mais densa da página: quatro frentes com cinco entregas
+          cada. Céu no mínimo — aqui o fundo só precisa não ser preto
+          chapado, e qualquer coisa além disso disputa com a leitura. */}
       <Estrelas
-        quantidade={64}
+        quantidade={22}
         semente={81213}
-        cadentes={4}
-        cometas={1}
-        nebulosa="mista"
-        className="opacity-75"
+        cadentes={1}
+        cometas={0}
+        className="opacity-40"
       />
 
       <Container className="relative">
@@ -44,6 +46,11 @@ export function Solucoes() {
                 className="grid gap-8 md:grid-cols-[minmax(0,20rem)_1fr] md:gap-14"
               >
                 <div className="md:sticky md:top-28 md:self-start">
+                  {/* Sem numeração: o próprio texto da seção diz que as
+                      quatro frentes se apoiam em vez de virem em ordem, e
+                      numerar sugeria uma sequência que não existe. Quem
+                      identifica a frente é o losango — vermelho para as que
+                      movem, azul para a que sustenta. */}
                   <div className="flex items-center gap-3">
                     <span
                       aria-hidden="true"
@@ -52,10 +59,8 @@ export function Solucoes() {
                         ehSistema ? "bg-sistema" : "bg-determinacao",
                       )}
                     />
-                    <span className="estado">{pilar.numero}</span>
+                    <h3 className="text-title">{pilar.nome}</h3>
                   </div>
-
-                  <h3 className="text-title mt-4">{pilar.nome}</h3>
                   <p
                     className={cn(
                       "font-display mt-3 text-[1.15rem] leading-snug font-bold",

@@ -12,12 +12,12 @@ export function Sobre() {
   return (
     <Section id="sobre" tone="camada" aria-labelledby="sobre-titulo">
       <Estrelas
-        quantidade={56}
+        quantidade={40}
         semente={62029}
-        cadentes={3}
+        cadentes={2}
         cometas={1}
         nebulosa="determinacao"
-        className="opacity-70"
+        className="opacity-60"
       />
 
       <Container className="relative">
@@ -53,15 +53,19 @@ export function Sobre() {
           </div>
 
           <div className="border-borda border-t pt-8 md:border-t-0 md:border-l md:pt-0 md:pl-12">
+            {/* O nome vem primeiro e o papel vem em frase, não em etiqueta
+                espaçada por cima do título: a informação é a mesma e some
+                um vício de layout que aparecia sem precisar existir. */}
             <div className="flex items-center gap-3">
               <span
                 aria-hidden="true"
                 className="bg-sistema h-[7px] w-[7px] rotate-45"
               />
-              <span className="estado">Fundador</span>
+              <h3 className="text-heading">{site.founder}</h3>
             </div>
-
-            <h3 className="text-heading mt-4">{site.founder}</h3>
+            <p className="text-texto-fraco mt-1.5 text-[0.9rem]">
+              Fundador da {site.name}
+            </p>
             <p className="text-texto-suave mt-4 max-w-[46ch] leading-relaxed">
               Mais de quatro anos em infraestrutura e cloud — hoje liderando um
               time responsável pela sustentação e disponibilidade de ambientes de

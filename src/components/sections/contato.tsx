@@ -59,7 +59,7 @@ export function Contato() {
       <Container className="relative">
         <div className="grid gap-14 md:grid-cols-2 md:gap-20">
           <div>
-            <h2 id="contato-titulo" className="text-display">
+            <h2 id="contato-titulo" className="text-subdisplay">
               E agora?
             </h2>
             <p className="text-lead mt-6 max-w-[46ch]">

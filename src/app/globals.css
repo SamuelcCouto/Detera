@@ -54,7 +54,23 @@
   --font-sans: "Oxanium", system-ui, -apple-system, sans-serif;
   --font-mono: "Oxanium", ui-monospace, monospace;
 
-  /* Escala — salto largo no display, razão ~1.25 no corpo */
+  /*
+    Escala — salto largo no display, razão ~1.25 no corpo.
+
+    Os três degraus de título não são tamanhos à escolha de quem escreve a
+    seção: são três volumes de voz, e cada seção recebe o seu pelo peso do
+    que ela diz.
+
+      `display`     o que a empresa é e o que ela vende — a oferta e o
+                    manifesto. Duas seções na página inteira, não mais.
+      `subdisplay`  o argumento: prova, problema, tese, fechamento.
+      `title`       utilidade — processo e dúvidas. Seção que explica
+                    mecânica não precisa do mesmo volume de quem defende
+                    uma ideia.
+
+    Antes disso, oito dos nove títulos da página saíam no mesmo tamanho, e
+    o FAQ gritava tão alto quanto o manifesto.
+  */
   --text-marca: clamp(3.25rem, 1rem + 9vw, 8rem);
   --text-marca--line-height: 0.86;
   --text-marca--letter-spacing: -0.045em;
@@ -62,6 +78,10 @@
   --text-display: clamp(2.1rem, 1.2rem + 3.6vw, 3.75rem);
   --text-display--line-height: 1;
   --text-display--letter-spacing: -0.03em;
+
+  --text-subdisplay: clamp(1.8rem, 1.15rem + 2.5vw, 3rem);
+  --text-subdisplay--line-height: 1.04;
+  --text-subdisplay--letter-spacing: -0.025em;
 
   --text-title: clamp(1.5rem, 1.15rem + 1.4vw, 2.25rem);
   --text-title--line-height: 1.1;
@@ -975,6 +995,44 @@
       animation-timeline: view();
       animation-range: entry 0% entry 35%;
     }
+
+    /*
+      O caminho de volta se desenha de baixo para cima conforme a pessoa
+      rola — o sentido da própria volta, de `05` para `01`. Revelar pelo
+      `clip-path` em vez de crescer a altura evita reflow: o elemento
+      ocupa o espaço final desde o começo e só a máscara se move.
+    */
+    .ciclo-volta {
+      animation: desenhar-volta linear both;
+      animation-timeline: view();
+      animation-range: entry 55% cover 42%;
+    }
+  }
+}
+
+/*
+  O retorno do ciclo: um "⊂" desenhado com três bordas e cantos
+  arredondados à esquerda. Um elemento só, sem SVG — assim ele acompanha
+  qualquer altura que a lista tenha sem viewBox para recalcular nem curva
+  esticada quando a caixa fica alta e estreita.
+*/
+.ciclo-volta {
+  border-top: 1px solid var(--color-borda-viva);
+  border-bottom: 1px solid var(--color-borda-viva);
+  border-left: 1px solid var(--color-borda-viva);
+  border-right: 0;
+  border-radius: 0.85rem 0 0 0.85rem;
+  /* O estado final também é o estado de quem não tem a animação: sem
+     suporte a view(), ou com movimento reduzido, a volta aparece inteira. */
+  clip-path: inset(0 0 0 0);
+}
+
+@keyframes desenhar-volta {
+  from {
+    clip-path: inset(100% 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
   }
 }
 
@@ -987,12 +1045,19 @@
   [data-surgir],
   .entrar,
   .meteoro,
-  .letra-meteoro {
+  .letra-meteoro,
+  .ciclo-volta {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
     filter: none !important;
     text-shadow: none !important;
+  }
+
+  /* Sem rolagem a máscara do retorno ficaria no quadro inicial, que é
+     invisível — no papel ele sai inteiro. */
+  .ciclo-volta {
+    clip-path: none !important;
   }
 
   /* A faixa de luz do nome não tem função no papel. */

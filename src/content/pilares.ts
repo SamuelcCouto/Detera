@@ -5,7 +5,6 @@ export type Entrega = {
 
 export type Pilar = {
   id: string;
-  numero: string;
   nome: string;
   promessa: string;
   descricao: string;
@@ -27,7 +26,6 @@ export type Pilar = {
 export const pilares: Pilar[] = [
   {
     id: "presenca",
-    numero: "01",
     nome: "Presença digital",
     promessa: "Um site que trabalha enquanto você trabalha.",
     descricao:
@@ -66,7 +64,6 @@ export const pilares: Pilar[] = [
   },
   {
     id: "crescimento",
-    numero: "02",
     nome: "Crescimento",
     promessa: "Atenção que não vira oportunidade é só custo.",
     descricao:
@@ -105,7 +102,6 @@ export const pilares: Pilar[] = [
   },
   {
     id: "tecnologia",
-    numero: "03",
     nome: "Tecnologia",
     promessa: "Tecnologia tira trabalho da frente. Não acrescenta.",
     descricao:
@@ -144,7 +140,6 @@ export const pilares: Pilar[] = [
   },
   {
     id: "infraestrutura",
-    numero: "04",
     nome: "Infraestrutura",
     promessa: "O lançamento é o começo do que importa.",
     descricao:

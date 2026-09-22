@@ -7,16 +7,16 @@ export function Diagnostico() {
   return (
     <Section id="diagnostico" tone="vazio" aria-labelledby="diagnostico-titulo">
       <Estrelas
-        quantidade={58}
+        quantidade={48}
         semente={30717}
         cadentes={3}
         cometas={1}
         nebulosa="determinacao"
-        className="opacity-75"
+        className="opacity-60"
       />
 
       <Container className="relative">
-        <h2 id="diagnostico-titulo" className="text-display max-w-[16ch]">
+        <h2 id="diagnostico-titulo" className="text-subdisplay max-w-[16ch]">
           Onde o digital costuma travar
         </h2>
         <p className="text-lead text-texto-suave mt-5 max-w-[58ch]">

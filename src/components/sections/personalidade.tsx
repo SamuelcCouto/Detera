@@ -35,17 +35,17 @@ export function Personalidade() {
       />
 
       <Estrelas
-        quantidade={64}
+        quantidade={44}
         semente={771}
-        cadentes={4}
+        cadentes={3}
         cometas={1}
         nebulosa="sistema"
-        className="opacity-80"
+        className="opacity-65"
       />
 
       <Container className="relative">
         <div className="max-w-[60ch]">
-          <h2 id="personalidade-titulo" className="text-display">
+          <h2 id="personalidade-titulo" className="text-subdisplay">
             {site.slogan}
           </h2>
           <p className="text-lead text-texto-suave mt-5">
