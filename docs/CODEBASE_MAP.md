@@ -86,7 +86,7 @@ detera/
     └── lib/                # seo/json-ld e utils (cn, env, whatsapp)
 ```
 
-Fora do produto: `.claude/` (launch.json do preview e o link da skill) e `.agents/` + `skills-lock.json` (skill `frontend-design` instalada via `npx skills`, ainda não versionada).
+Fora do produto: `.claude/launch.json` (servidor do preview) e a skill `frontend-design`, instalada via `npx skills` — versionada em `.agents/skills/` com o `skills-lock.json`. `.claude/skills/` é uma junção do Windows para lá, fora do Git; em outra máquina, `npx skills add https://github.com/anthropics/skills --skill frontend-design` recria.
 
 ## Guia por módulo
 
